@@ -1,0 +1,22 @@
+{
+    "locations": [
+        {
+            "name": "Amsterdam",
+            "slug": "amsterdam",
+            "image": "amsterdam.jpg",
+            "id": 1
+        },
+        {
+            "name": "Paris",
+            "slug": "paris",
+            "image": "paris.jpg",
+            "id": 1
+        },
+        {
+            "name": "Cairo",
+            "slug": "cairo",
+            "image": "cairo.jpg",
+            "id": 1
+        }
+    ]
+}
