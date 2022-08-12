@@ -10,13 +10,13 @@
             "name": "Paris",
             "slug": "paris",
             "image": "paris.jpg",
-            "id": 1
+            "id": 2
         },
         {
             "name": "Cairo",
             "slug": "cairo",
             "image": "cairo.jpg",
-            "id": 1
+            "id": 3
         }
     ]
 }
