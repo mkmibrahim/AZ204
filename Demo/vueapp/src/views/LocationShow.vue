@@ -3,10 +3,13 @@
     <h1>{{ location.name }}</h1>
     <div class="locatio-details">
       <img :src="'/images/' + location.image" :alt="location.name" />
+      <p>Temperature: {{ location.temperature }}</p>
+      <p>Humidity: {{ location.humidity }}</p>
     </div>
   </section>
 </template>
 <script>
+import api from "@/services/TemperatureService.js";
 export default {
   data() {
     return {
@@ -17,11 +20,21 @@ export default {
     locationId() {
       return parseInt(this.$route.params.id);
     },
+    locationSlug() {
+      return this.$route.params.slug;
+    },
   },
   async created() {
-    //const response = await fetch("https://travel-dummy-api.netlify.app/brazil");
-    const response = await fetch("/api/weather");
-    this.location = await response.json();
+    this.initData();
+    //this.$watch(() => this.$route.params, this.initData);
+  },
+  methods: {
+    async initData() {
+      const response = await api.getTemperatureFunction(
+        this.$route.params.slug
+      );
+      this.location = response;
+    },
   },
 };
 </script>
