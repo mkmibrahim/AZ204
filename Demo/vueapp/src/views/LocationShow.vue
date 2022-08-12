@@ -20,7 +20,7 @@ export default {
   },
   async created() {
     //const response = await fetch("https://travel-dummy-api.netlify.app/brazil");
-    const response = await fetch("/weather");
+    const response = await fetch("/api/weather");
     this.location = await response.json();
   },
 };
