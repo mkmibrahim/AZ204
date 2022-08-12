@@ -1,24 +1,27 @@
 <template>
-  <section class="location">
+  <section v-if="location" class="location">
     <h1>{{ location.name }}</h1>
-    <dic class="locatio-details">
+    <div class="locatio-details">
       <img :src="'/images/' + location.image" :alt="location.name" />
-    </dic>
+    </div>
   </section>
 </template>
 <script>
-import sourceData from "@/data.json";
-
 export default {
+  data() {
+    return {
+      location: null,
+    };
+  },
   computed: {
     locationId() {
       return parseInt(this.$route.params.id);
     },
-    location() {
-      return sourceData.locations.find(
-        (location) => location.id == this.locationId
-      );
-    },
+  },
+  async created() {
+    //const response = await fetch("https://travel-dummy-api.netlify.app/brazil");
+    const response = await fetch("/weather");
+    this.location = await response.json();
   },
 };
 </script>

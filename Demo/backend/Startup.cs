@@ -15,6 +15,7 @@ namespace backend
         }
 
         public IConfiguration Configuration { get; }
+        private readonly string _policy = "CorsPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -24,6 +25,18 @@ namespace backend
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "vue_dotnet_example", Version = "v1" });
             //});
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _policy,
+                                    policy =>
+                                    {
+                                        //policy.WithOrigins("http://localhost");
+                                        //policy.WithOrigins("https://localhost:8080/", "http://localhost:8080/")
+                                        policy.AllowAnyOrigin()
+                                                .AllowAnyHeader()
+                                                .AllowAnyMethod();
+                                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +53,8 @@ namespace backend
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseCors(_policy);
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

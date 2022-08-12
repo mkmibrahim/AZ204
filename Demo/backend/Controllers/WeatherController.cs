@@ -22,6 +22,10 @@ namespace backend.Controllers
             var rng = new Random();
             var result = new Weather
             {
+                Name = "Brazil",
+                Slug = "brazil",
+                Image = "brazil.jpg",
+                Id = 1,
                 Date = DateTime.Now,
                 Temperature = rng.Next(-20, 45),
                 Humidity = rng.Next(20, 80),
