@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import ParisView from "../views/ParisView.vue";
-import CairoView from "../views/CairoView.vue";
 
 const routes = [
   {
@@ -10,29 +8,16 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/Amsterdam",
-    name: "Amsterdam",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AmsterdamView.vue"),
-  },
-  {
-    path: "/Paris",
-    name: "Paris",
-    component: ParisView,
-  },
-  {
-    path: "/Cairo",
-    name: "Cairo",
-    component: CairoView,
+    path: "/location/:id/:slug",
+    name: "location.show",
+    component: () => import("@/views/LocationShow.vue"),
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  linkActiveClass: "vue-active-link",
 });
 
 export default router;
