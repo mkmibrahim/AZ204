@@ -1,5 +1,7 @@
 $resourceGroupName= 'MsLearn'
 $appName= "az204DemoApp123"
+$appServicePlanName= "az204DemoAppServicePlan123"
+$backendAppName = "az204DemoBackendApp123"
 
 $location = Get-Location
 
@@ -24,4 +26,14 @@ if($resourceGroup){
 
 az webapp up -g $resourceGroupName -n $appName --html
 
+
+
+az appservice plan create --name $appServicePlanName --resource-group $resourceGroupName --sku FREE
+
+az webapp create --resource-group $resourceGroupName --plan $appServicePlanName --name $backendAppName --deployment-local-git
+
+Set-Location ..\backend\
+
+//git push azure main
+git push azure main:master
 Set-Location $location
