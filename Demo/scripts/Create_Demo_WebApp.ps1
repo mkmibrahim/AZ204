@@ -3,7 +3,7 @@ $azureLocation ="westeurope"
 $appName= "az204DemoApp123"
 $appServicePlanName= "az204DemoAppServicePlan123"
 $backendAppName = "az204DemoBackendApp123"
-$apiServiceName ="az204api123"
+$apiServiceName ="az204api1231"
 
 $location = Get-Location
 
@@ -29,7 +29,7 @@ if($AppservicePlanCheck){
     Write-Host "Appservice plan $appServicePlanName already exists."
 } else {
     az appservice plan create --name $appServicePlanName --resource-group $resourceGroupName --sku FREE --location $azureLocation
-    Write-Host "Resource Group $appServicePlanName created."
+    Write-Host "Appservice plan $appServicePlanName created."
 }
 
 
