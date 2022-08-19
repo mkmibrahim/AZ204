@@ -4,6 +4,7 @@ module.exports = defineConfig({
 });
 module.exports = {
   devServer: {
-    proxy: "http://localhost:5000"
+    // proxy: "http://localhost:5000"
+    proxy: process.env.BACKEND_API
     }
 }
