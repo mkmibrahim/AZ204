@@ -3,7 +3,7 @@ $azureLocation ="westeurope"
 $appName= "az204DemoApp123"
 $appServicePlanName= "az204DemoAppServicePlan123"
 $backendAppName = "az204DemoBackendApp123"
-$apiServiceName ="az204api123"
+#$apiServiceName ="az204api123"
 
 $location = Get-Location
 
@@ -36,14 +36,15 @@ if($AppservicePlanCheck){
 Write-Host "Publishing frontend WebApp to Azure"
 az webapp up -g $resourceGroupName -n $appName --html --plan $appServicePlanName --location $azureLocation
 
-Write-Host "Create api management service"
-az apim create --name $apiServiceName --resource-group $resourceGroupName --publisher-name ContosoKsol --publisher-email admin@test.com --no-wait
+#Write-Host "Create api management service"
+#az apim create --name $apiServiceName --resource-group $resourceGroupName --publisher-name ContosoKsol --publisher-email admin@test.com --no-wait
 # te check status use: az apim show --name "az204api123" --resource-group MsLearn --output table
 
-Write-Host "Publishing backend WebApp to Azure"
-az webapp create --resource-group $resourceGroupName --plan $appServicePlanName --name $backendAppName --deployment-local-git 
+# Write-Host "Create backend WebApp"
+# az webapp create --resource-group $resourceGroupName --plan $appServicePlanName --name $backendAppName --deployment-local-git 
 
 Set-Location ..\..\backend\
 
+Write-Host "Publishing backend WebApp to Azure"
 git push azure AddAzureBackendWebApp:master
 Set-Location $location

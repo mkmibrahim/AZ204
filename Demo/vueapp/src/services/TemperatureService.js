@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: "https://localhost:5001",
+  //baseURL: "https://localhost:5001",
+  baseURL: process.env.NET_API,
   json: true,
 });
 
