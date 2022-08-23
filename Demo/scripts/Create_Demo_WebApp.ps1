@@ -3,7 +3,7 @@ $azureLocation ="westeurope"
 $appName= "az204DemoApp123"
 $appServicePlanName= "az204DemoAppServicePlan123"
 $backendAppName = "az204DemoBackendApp123"
-$apiServiceName ="az204api123"
+#$apiServiceName ="az204api123"
 
 $location = Get-Location
 
@@ -40,8 +40,8 @@ az webapp up -g $resourceGroupName -n $appName --html --plan $appServicePlanName
 #az apim create --name $apiServiceName --resource-group $resourceGroupName --publisher-name ContosoKsol --publisher-email admin@test.com --no-wait
 # te check status use: az apim show --name "az204api123" --resource-group MsLearn --output table
 
-Write-Host "Create backend WebApp"
-az webapp create --resource-group $resourceGroupName --plan $appServicePlanName --name $backendAppName --deployment-local-git 
+# Write-Host "Create backend WebApp"
+# az webapp create --resource-group $resourceGroupName --plan $appServicePlanName --name $backendAppName --deployment-local-git 
 
 Set-Location ..\..\backend\
 
