@@ -40,11 +40,17 @@ az webapp up -g $resourceGroupName -n $appName --html --plan $appServicePlanName
 #az apim create --name $apiServiceName --resource-group $resourceGroupName --publisher-name ContosoKsol --publisher-email admin@test.com --no-wait
 # te check status use: az apim show --name "az204api123" --resource-group MsLearn --output table
 
-# Write-Host "Create backend WebApp"
-# az webapp create --resource-group $resourceGroupName --plan $appServicePlanName --name $backendAppName --deployment-local-git 
+Write-Host "Create backend WebApp"
+az webapp create --resource-group $resourceGroupName --plan $appServicePlanName --name $backendAppName --deployment-local-git 
 
 Set-Location ..\..\backend\
 
 Write-Host "Publishing backend WebApp to Azure"
 git push azure AddAzureBackendWebApp:master
+# Get FTP publishing profile and query for publish URL and credentials
+#$creds=(az webapp deployment list-publishing-profiles --name $backendAppName --resource-group $resourceGroupName --query "[?contains(publishMethod, 'FTP')].[publishUrl,userName,userPWD]" --output tsv)
+
+#$credsplit = $creds -split '\s+'
+# Use cURL to perform FTP upload. You can use any FTP tool to do this instead. 
+#curl.exe -T index.html -u $credsplit[1]:$credsplit[2] $credsplit[0]
 Set-Location $location
