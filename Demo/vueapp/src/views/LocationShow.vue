@@ -7,13 +7,18 @@
       <p>Humidity: {{ location.humidity }}</p>
     </div>
   </section>
+  <!-- <div id="app">
+    {{ info }}
+  </div> -->
 </template>
 <script>
+//import axios from "axios";
 import api from "@/services/TemperatureService.js";
 export default {
   data() {
     return {
       location: null,
+      info: null,
     };
   },
   computed: {
@@ -26,15 +31,22 @@ export default {
   },
   async created() {
     this.initData();
-    //this.$watch(() => this.$route.params, this.initData);
   },
   methods: {
     async initData() {
       const response = await api.getTemperatureFunction(
         this.$route.params.slug
       );
-      this.location = response;
+      console.log("Response is %o", response);
+      this.location = response.data;
     },
   },
+  // mounted() {
+  //   axios
+  //     .get("https://api.coindesk.com/v1/bpi/currentprice.json")
+  //     .then((response) => {
+  //       this.info = response;
+  //     });
+  // },
 };
 </script>

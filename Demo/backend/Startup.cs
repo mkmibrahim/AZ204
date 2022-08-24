@@ -60,11 +60,13 @@ namespace backend
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseHttpsRedirection();
+            app.UseCors(_policy);
+
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseCors(_policy);
+            
             //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

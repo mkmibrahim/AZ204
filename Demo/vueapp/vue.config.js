@@ -4,8 +4,8 @@ module.exports = defineConfig({
 });
 module.exports = {
   devServer: {
-    // proxy: "http://localhost:5000"
+    // proxy: "https://localhost:5001"
     //proxy: process.env.BACKEND_API
-    proxy: "https://az204demobackendapp123.azurewebsites.net"
+    //proxy: "https://az204demobackendapp123.azurewebsites.net"
     }
 }
