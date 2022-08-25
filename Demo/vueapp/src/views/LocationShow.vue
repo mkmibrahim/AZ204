@@ -6,6 +6,7 @@
       <p>Temperature: {{ location.temperature }}</p>
       <p>Humidity: {{ location.humidity }}</p>
     </div>
+    <GoBack />
   </section>
   <!-- <div id="app">
     {{ info }}
@@ -14,7 +15,9 @@
 <script>
 //import axios from "axios";
 import api from "@/services/TemperatureService.js";
+import GoBack from "@/components/GoBack.vue";
 export default {
+  components: { GoBack },
   data() {
     return {
       location: null,
