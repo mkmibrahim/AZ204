@@ -5,7 +5,10 @@
       <router-link
         v-for="location in locations"
         :key="location.id"
-        :to="location.slug"
+        :to="{
+          name: 'location.show',
+          params: { id: location.id, slug: location.slug },
+        }"
       >
         <h2>{{ location.name }}</h2>
         <img :src="'/images/' + location.image" :alt="location.name" />

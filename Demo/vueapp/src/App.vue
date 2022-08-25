@@ -1,14 +1,16 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/Amsterdam">Amsterdam</router-link> |
-    <router-link to="/Paris">Paris</router-link> |
-    <router-link to="/Cairo">Cairo</router-link>
-  </div>
+  <TheNavigationVue />
   <div class="container">
-    <router-view />
+    <router-view :key="$route.path" />
   </div>
 </template>
+
+<script>
+import TheNavigationVue from "@/components/TheNavigation.vue";
+export default {
+  components: { TheNavigationVue },
+};
+</script>
 
 <style>
 #app {
