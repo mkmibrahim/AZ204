@@ -20,7 +20,7 @@ export default {
   getTemperatureFunction(locationName) {
     //console.log("VUE_APP_NET_API is " + process.env.VUE_APP_NET_API);
     return axios.get(
-      process.env.VUE_APP_NET_API + "/api/weather/Get/" + locationName
+      process.env.VUE_APP_NET_API + "/api/city/Get/" + locationName
     );
   },
 };

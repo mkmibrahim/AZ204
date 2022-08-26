@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace backend
+namespace backend.Models
 {
-    public class Weather
+    public class CityInfo
     {
         public string Name { get; set; }
         public string Slug { get; set; }
