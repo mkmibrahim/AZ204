@@ -1,10 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using backend.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-//using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Logging;
 
 namespace backend
 {
@@ -45,6 +51,7 @@ namespace backend
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseSwagger(c =>
                 {
                     c.SerializeAsV2 = true;
@@ -57,12 +64,11 @@ namespace backend
 
             app.UseCors(_policy);
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

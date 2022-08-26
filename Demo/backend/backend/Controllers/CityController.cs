@@ -1,22 +1,20 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using backend.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using backend.Models;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public class WeatherController : ControllerBase
+    public class CityController : ControllerBase
     {
-        private readonly ILogger<WeatherController> _logger;
+        private readonly ILogger<CityController> _logger;
 
         //private readonly int _sessionId;
         private readonly ICityInfoComposer _composer;
 
 
-        public WeatherController(ILogger<WeatherController> logger,
+        public CityController(ILogger<CityController> logger,
             ICityInfoComposer cityInfoComposer)
         {
             _logger = logger;

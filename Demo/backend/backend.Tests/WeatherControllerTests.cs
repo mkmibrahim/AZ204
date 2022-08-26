@@ -13,12 +13,12 @@ namespace backend.Tests
         public void CreateWeatherController()
         {
             // Arrange
-            var loggerMock = new Mock<ILogger<WeatherController>>();
-            ILogger<WeatherController> logger = loggerMock.Object;
+            var loggerMock = new Mock<ILogger<CityController>>();
+            ILogger<CityController> logger = loggerMock.Object;
             var composerMock = new Mock<ICityInfoComposer>().Object;
 
             //Act
-            var controller = new WeatherController(logger, composerMock);
+            var controller = new CityController(logger, composerMock);
 
             //Assert
             Assert.NotNull(controller);
@@ -28,8 +28,8 @@ namespace backend.Tests
         public void GetReturnsCityInfo()
         {
             // Arrange
-            var loggerMock = new Mock<ILogger<WeatherController>>();
-            ILogger<WeatherController> logger = loggerMock.Object;
+            var loggerMock = new Mock<ILogger<CityController>>();
+            ILogger<CityController> logger = loggerMock.Object;
             var composerMock = new Mock<ICityInfoComposer>();
             var cityName = "TestCity";
             var summary = "This is a nice city";
@@ -38,7 +38,7 @@ namespace backend.Tests
                                                       Image = cityName+".jpg",
                                                       Summary = summary};
             composerMock.Setup(c => c.GetInfo(cityName)).Returns(expectedReturnMessage);
-            var controller = new WeatherController(logger, composerMock.Object);
+            var controller = new CityController(logger, composerMock.Object);
 
             //Act
             var response = controller.Get(cityName);
