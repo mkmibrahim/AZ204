@@ -43,7 +43,7 @@ az webapp up -g $resourceGroupName -n $appName --html --plan $appServicePlanName
 Write-Host "Create backend WebApp"
 az webapp create --resource-group $resourceGroupName --plan $appServicePlanName --name $backendAppName --deployment-local-git 
 
-Set-Location ..\..\backend\
+Set-Location ..\..\backend\backend\
 
 Write-Host "Publishing backend WebApp to Azure using Branch AddAzureBackendWebApp"
 git push azure AddAzureBackendWebApp:master

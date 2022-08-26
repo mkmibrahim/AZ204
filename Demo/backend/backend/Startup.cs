@@ -1,3 +1,4 @@
+using backend.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,10 +23,6 @@ namespace backend
         {
             services.AddControllers();
             services.AddSwaggerGen();
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "vue_dotnet_example", Version = "v1" });
-            //});
             services.AddCors(options =>
             {
                 options.AddPolicy(name: _policy,
@@ -38,6 +35,7 @@ namespace backend
                                                 .AllowAnyMethod();
                                     });
             });
+            services.AddScoped<ICityInfoComposer, CityInfoComposer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,9 +44,6 @@ namespace backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseSwagger();
-                //app.UseSwaggerUI();
-                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "vue_dotnet_example v1"));
             }
             app.UseSwagger(c =>
                 {
