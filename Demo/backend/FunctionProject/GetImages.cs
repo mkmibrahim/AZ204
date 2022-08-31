@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace FunctionProject
 {
@@ -40,30 +41,10 @@ namespace FunctionProject
 
         private static async Task<string> GetAsync(string city)
         {
+            var imageRetriever = new ImageRetriever();
 
-            HttpClient client = new HttpClient();
-            string uri = "https://api.unsplash.com/search/photos?query=" + city + "&per_page=30&orientation=portrait&page=1&client_id="+Environment.GetEnvironmentVariable("Unsplash_Client_ID");
-            string responseBody="";
-
-            try	
-            {
-                HttpResponseMessage response = await client.GetAsync(uri);
-                response.EnsureSuccessStatusCode();
-                responseBody = await response.Content.ReadAsStringAsync();
-                // Above three lines can be replaced with new helper method below
-                // string responseBody = await client.GetStringAsync(uri);
-            }
-            catch(HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");	
-                Console.WriteLine("Message :{0} ",e.Message);
-            }
-            
-            var details = JObject.Parse(responseBody);
-            var imageUrl = details["results"][1]["urls"]["regular"];
-            var imageUrlString = details.SelectToken("results[1].urls.regular")?.ToObject<string>();
-
-            return imageUrlString;
+            var result = await imageRetriever.RetrieveImages(city);
+            return result.FirstOrDefault();
         }
     }
 }
