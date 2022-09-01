@@ -2,7 +2,8 @@
   <section v-if="location" class="location">
     <h1>{{ location.name }}</h1>
     <div class="locatio-details">
-      <img :src="'/images/' + location.image" :alt="location.name" />
+      <!-- <img :src="'/images/' + location.image" :alt="location.name" /> -->
+      <img :src="location.image" :alt="location.name" />
       <p>Temperature: {{ location.temperature }}</p>
       <p>Humidity: {{ location.humidity }}</p>
     </div>

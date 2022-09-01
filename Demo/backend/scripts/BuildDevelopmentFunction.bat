@@ -1,0 +1,2 @@
+cd ..\FunctionProject
+func start

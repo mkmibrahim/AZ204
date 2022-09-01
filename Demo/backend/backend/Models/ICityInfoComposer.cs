@@ -1,7 +1,10 @@
-﻿namespace backend.Models
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+
+namespace backend.Models
 {
     public interface ICityInfoComposer
     {
-        public CityInfo GetInfo(string cityName);
+        public Task<CityInfo> GetInfo(string cityName);
     }
 }

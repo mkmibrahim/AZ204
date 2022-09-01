@@ -22,14 +22,14 @@ namespace backend.Tests.ModelsTests
         }
 
         [Fact]
-        public void GetInfoWithValidInput()
+        public async void GetInfoWithValidInput()
         {
             //Arrange
             var composer = new CityInfoComposer();
-            var cityName = "TestCity";
+            var cityName = "Paris";
 
             //Act
-            var result = composer.GetInfo(cityName);
+            var result = await composer.GetInfo(cityName);
 
             // Assert
             Assert.NotNull(result);
