@@ -1,7 +1,9 @@
 ﻿using backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace backend.Controllers
 {
@@ -9,6 +11,7 @@ namespace backend.Controllers
     public class CityController : ControllerBase
     {
         private readonly ILogger<CityController> _logger;
+        //private IConfiguration configuration;
 
         //private readonly int _sessionId;
         private readonly ICityInfoComposer _composer;
@@ -23,9 +26,9 @@ namespace backend.Controllers
 
         [HttpGet("{locationName}")]
         [ActionName("Get")]
-        public CityInfo Get([FromRoute]string locationName)
+        public async Task<CityInfo> GetAsync([FromRoute]string locationName)
         {
-            return _composer.GetInfo(locationName);
+            return await _composer.GetInfo(locationName);
         }
     }
 }

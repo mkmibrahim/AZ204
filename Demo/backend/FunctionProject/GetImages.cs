@@ -31,10 +31,12 @@ namespace FunctionProject
 
             var imageString = await GetAsync(city);
 
+            //string responseMessage = string.IsNullOrEmpty(city)
+            //    ? "This HTTP triggered function executed successfully. Pass a city name in the query string or in the request body for a personalized response."
+            //    : $"Hello, {city}. This HTTP triggered function executed successfully. The image string is "+ imageString;
 
-            string responseMessage = string.IsNullOrEmpty(city)
-                ? "This HTTP triggered function executed successfully. Pass a city name in the query string or in the request body for a personalized response."
-                : $"Hello, {city}. This HTTP triggered function executed successfully. The image string is "+ imageString;
+            var responseMessage = new{city = city, image = imageString};
+            var jsonToReturn = JsonConvert.SerializeObject(responseMessage);
 
             return new OkObjectResult(responseMessage);
         }

@@ -1,5 +1,6 @@
 ﻿using backend.Controllers;
 using backend.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -16,6 +17,7 @@ namespace backend.Tests
             var loggerMock = new Mock<ILogger<CityController>>();
             ILogger<CityController> logger = loggerMock.Object;
             var composerMock = new Mock<ICityInfoComposer>().Object;
+            var config = new ConfigurationBuilder();
 
             //Act
             var controller = new CityController(logger, composerMock);
@@ -25,7 +27,7 @@ namespace backend.Tests
         }
 
         [Fact]
-        public void GetReturnsCityInfo()
+        public async void GetReturnsCityInfo()
         {
             // Arrange
             var loggerMock = new Mock<ILogger<CityController>>();
@@ -37,11 +39,11 @@ namespace backend.Tests
                                                       Slug = cityName,
                                                       Image = cityName+".jpg",
                                                       Summary = summary};
-            composerMock.Setup(c => c.GetInfo(cityName)).Returns(expectedReturnMessage);
+            composerMock.Setup(c => c.GetInfo(cityName)).ReturnsAsync(expectedReturnMessage);
             var controller = new CityController(logger, composerMock.Object);
 
             //Act
-            var response = controller.Get(cityName);
+            var response = await controller.GetAsync(cityName);
 
             //Assert
             Assert.Equal(cityName, response.Name);
