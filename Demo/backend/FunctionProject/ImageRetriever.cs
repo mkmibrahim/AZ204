@@ -20,6 +20,7 @@ namespace FunctionProject
             var result = new List<string>();
             HttpClient client = new HttpClient();
             string uri = "https://api.unsplash.com/search/photos?query=" + city + "&per_page=30&orientation=portrait&page=1&client_id="+Environment.GetEnvironmentVariable("Client_ID");
+            //string uri = "https://api.unsplash.com/search/photos?query=" + city + "&per_page=30&orientation=portrait&page=1&client_id=3ZT5O-ow2-bgTuuwZn7-jf8VS7PoZgTsKW5vj06c2T8";
             string responseBody="";
 
             try	
