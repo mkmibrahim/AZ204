@@ -12,27 +12,29 @@ $location = Get-Location
 Set-Location ..\backend\FunctionProject\
 
 #publish the code 
-dotnet publish -c Release
-$publishFolder = "Demo\backend\FunctionProject\bin\Release\net6.0\publish\"
+#dotnet publish -c Release
+#$publishFolder = "Demo\backend\FunctionProject\bin\Release\net6.0\publish\"
 
-Write-Host "Creating AzureFunction Zipfile"
-$publishZip = "publish.zip"
-$publishZipPath = Join-Path -path $location ..\ $publishZip
+#Write-Host "Creating AzureFunction Zipfile"
+#$publishZip = "publish.zip"
+#$publishZipPath = Join-Path -path $location ..\ $publishZip
 
-if(Test-Path $publishZipPath)
-{Remove-item $publishZipPath}
+#if(Test-Path $publishZipPath)
+#{Remove-item $publishZipPath}
 
-Add-Type -Assembly "system.io.compression.filesystem"
-[io.compression.zipfile]::CreateFromDirectory($publishFolder,$publishZipPath)
+#Add-Type -Assembly "system.io.compression.filesystem"
+#[io.compression.zipfile]::CreateFromDirectory($publishFolder,$publishZipPath)
 
 Write-Host "Creating Storage Account for Azure Function"
-az storage account create --name $AzureStorageAccountName -g $resourceGroupName --location $azureLocation --sku Standard_RAGRS --kind StorageV2
+az storage account create -n $AzureStorageAccountName -g $resourceGroupName --location $azureLocation --sku Standard_RAGRS --kind StorageV2
 
 Write-Host "Creating Azure Function in Azure"
-az functionapp create -g $resourceGroupName --name $AzureFunctionAppName  --runtime dotnet --storage-account $AzureStorageAccountName --consumption-plan-location $azureLocation --functions-version 4
+az functionapp create -g $resourceGroupName -n $AzureFunctionAppName  --runtime dotnet --storage-account $AzureStorageAccountName --consumption-plan-location $azureLocation --functions-version 4
 
-Write-Host "Publishing AzureFunction Zipfile"
-az functionapp deployment source config-zip -g $resourceGroupName --name $AzureFunctionAppName --src $publishZipPath
-#Publish-AzWebapp -ResourceGroupName $resourceGroupName -Name $AzureFunctionAppName -ArchivePath $publishZipPath
+Start-Sleep -Seconds 10
+
+Write-Host "Publishing AzureFunction"
+#az functionapp deployment source config-zip -g $resourceGroupName --name $AzureFunctionAppName --src $publishZipPath
+func azure functionapp publish $AzureFunctionAppName --publish-local-settings 
 
 Set-Location $location
