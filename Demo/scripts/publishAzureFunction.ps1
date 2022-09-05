@@ -5,7 +5,7 @@ $appServicePlanName= "az204DemoAppServicePlan123"
 $backendAppName = "az204DemoBackendApp123"
 $AzureFunctionAppName = "az204DemoAzureFunctionBackendApp123"
 $AzureStorageAccountName = "az204demostorageaccount1"
-#$apiServiceName ="az204api123"
+
 
 $location = Get-Location
 
