@@ -1,7 +1,9 @@
 ﻿using backend.Controllers;
 using backend.Models;
+using backend.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using System;
 using Xunit;
@@ -20,7 +22,7 @@ namespace backend.Tests
             var config = new ConfigurationBuilder();
 
             //Act
-            var controller = new CityController(logger, composerMock);
+            var controller = new CityController(logger, composerMock, optionsHelper.CreateOptions());
 
             //Assert
             Assert.NotNull(controller);
@@ -40,7 +42,8 @@ namespace backend.Tests
                                                       Image = cityName+".jpg",
                                                       Summary = summary};
             composerMock.Setup(c => c.GetInfo(cityName)).ReturnsAsync(expectedReturnMessage);
-            var controller = new CityController(logger, composerMock.Object);
+
+            var controller = new CityController(logger, composerMock.Object, optionsHelper.CreateOptions());
 
             //Act
             var response = await controller.GetAsync(cityName);

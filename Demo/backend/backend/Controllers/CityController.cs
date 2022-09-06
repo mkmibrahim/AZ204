@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace backend.Controllers
@@ -15,12 +16,15 @@ namespace backend.Controllers
 
         //private readonly int _sessionId;
         private readonly ICityInfoComposer _composer;
+        private readonly ConfigurationClass _configClass;
 
 
         public CityController(ILogger<CityController> logger,
-            ICityInfoComposer cityInfoComposer)
+            ICityInfoComposer cityInfoComposer,
+            IOptions<ConfigurationClass> options)
         {
             _logger = logger;
+            _configClass = options.Value;
             _composer = cityInfoComposer;
         }
 
