@@ -1,4 +1,6 @@
 ﻿using backend.Models;
+using backend.Tests.Helpers;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,19 +15,18 @@ namespace backend.Tests.ModelsTests
         {
             //Arrange
 
-
             //Act
-            var composer = new CityInfoComposer();
+            var composer = new CityInfoComposer(optionsHelper.CreateOptions());
 
             //Assert
             Assert.NotNull(composer);
         }
 
-        [Fact]
+        [Fact(Skip = "Only run when Azure function is available")]
         public async void GetInfoWithValidInput()
         {
             //Arrange
-            var composer = new CityInfoComposer();
+            var composer = new CityInfoComposer(optionsHelper.CreateOptions());
             var cityName = "Paris";
 
             //Act

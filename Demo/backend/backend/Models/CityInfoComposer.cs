@@ -9,17 +9,21 @@ using System.Xml.Linq;
 using static System.Net.WebRequestMethods;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
+using Microsoft.Extensions.Options;
 
 namespace backend.Models
 {
     public class CityInfoComposer : ICityInfoComposer
     {
         private IConfiguration _configuration;
+        private readonly ConfigurationClass _configClass;
 
-        public CityInfoComposer()
+        public CityInfoComposer(IOptions<ConfigurationClass> options)
         {
             _configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.Development.json").Build();
+
+            _configClass = options.Value;
         }
 
         public async Task<CityInfo> GetInfo(string cityName)
@@ -43,10 +47,7 @@ namespace backend.Models
         private async Task<string> getImageAsync(string cityName)
         {
             HttpClient client = new HttpClient();
-            //string uri = "http://localhost:7071/api/GetImages?city="+cityName;
-            string configValue = _configuration.GetSection("configuration")
-                .GetChildren().FirstOrDefault(config => config.Key == "AzureFunctionUrl").Value;
-            string uri = configValue + cityName;
+            string uri = _configClass.Url + cityName;
             string responseBody="";
 
             try	

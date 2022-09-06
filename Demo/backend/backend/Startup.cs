@@ -42,6 +42,8 @@ namespace backend
                                     });
             });
             services.AddScoped<ICityInfoComposer, CityInfoComposer>();
+            services.Configure<ConfigurationClass>
+                (this.Configuration.GetSection("AzureFunctionConfiguration"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
