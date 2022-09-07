@@ -15,14 +15,10 @@ namespace backend.Models
 {
     public class CityInfoComposer : ICityInfoComposer
     {
-        private IConfiguration _configuration;
         private readonly ConfigurationClass _configClass;
 
         public CityInfoComposer(IOptions<ConfigurationClass> options)
         {
-            _configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.Development.json").Build();
-
             _configClass = options.Value;
         }
 
@@ -30,11 +26,13 @@ namespace backend.Models
         {
             var rng = new Random();
             var imageString = await getImageAsync(cityName);
+            List<string> images = await getImageAsync(cityName,5);
             var result = new CityInfo
             {
                 Name = cityName,
                 Slug = cityName,
-                Image = imageString,
+                Image = imageString.FirstOrDefault(),
+                Images = images,
                 Id = 1,
                 Date = DateTime.Now,
                 Temperature = rng.Next(-20, 45),
@@ -44,10 +42,11 @@ namespace backend.Models
             return result;
         }
 
-        private async Task<string> getImageAsync(string cityName)
+        private async Task<List<string>> getImageAsync(string cityName, int quantity = 1)
         {
+            List<string> images = new List<string>();
             HttpClient client = new HttpClient();
-            string uri = _configClass.Url + cityName;
+            string uri = _configClass.Url + cityName + "&quantity=" + quantity;
             string responseBody="";
 
             try	
@@ -61,10 +60,13 @@ namespace backend.Models
             }
             
             var details = JObject.Parse(responseBody);
-            var imageUrlString = details.SelectToken("image")?.ToObject<string>();
-            var result = imageUrlString;
             
-            return result;
+            for(int i= 0; i<quantity;i++)
+            { 
+                var imageUrlString = details.SelectToken("image")[0]?.ToObject<string>();
+                images.Add(imageUrlString);
+            }
+            return images;
 
 
         }
