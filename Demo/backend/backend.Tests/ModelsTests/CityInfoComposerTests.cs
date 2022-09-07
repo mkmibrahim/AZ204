@@ -23,6 +23,7 @@ namespace backend.Tests.ModelsTests
         }
 
         [Fact(Skip = "Only run when Azure function is available")]
+        //[Fact]
         public async void GetInfoWithValidInput()
         {
             //Arrange
@@ -37,6 +38,10 @@ namespace backend.Tests.ModelsTests
             Assert.Equal(cityName, result.Name);
             Assert.Equal(cityName, result.Slug);
             Assert.False(string.IsNullOrEmpty(result.Summary));
+            for(int i = 0; i < 5; i++)
+            {
+                Assert.False(string.IsNullOrEmpty(result.Images[i]));
+            }
 
 
         }

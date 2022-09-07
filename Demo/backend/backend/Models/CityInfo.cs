@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace backend.Models
 {
@@ -12,5 +13,6 @@ namespace backend.Models
         public int Temperature { get; set; }
         public int Humidity { get; set;}
         public string Summary { get; set; }
+        public List<string> Images {get; set; }
     }
 }

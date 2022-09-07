@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace FunctionProject
 {
@@ -21,32 +22,29 @@ namespace FunctionProject
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("Received a request for city "+ req.Query["city"]);
 
             string city = req.Query["city"];
+            int.TryParse(req.Query["quantity"], out var quantity);
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            city = city ?? data?.name;
-
-            var imageString = await GetAsync(city);
-
-            //string responseMessage = string.IsNullOrEmpty(city)
-            //    ? "This HTTP triggered function executed successfully. Pass a city name in the query string or in the request body for a personalized response."
-            //    : $"Hello, {city}. This HTTP triggered function executed successfully. The image string is "+ imageString;
+            var imageString = await GetAsync(city, quantity);
 
             var responseMessage = new{city = city, image = imageString};
-            var jsonToReturn = JsonConvert.SerializeObject(responseMessage);
+            //var jsonToReturn = JsonConvert.SerializeObject(responseMessage);
 
             return new OkObjectResult(responseMessage);
         }
 
-        private static async Task<string> GetAsync(string city)
+        private static async Task<List<string>> GetAsync(string city, int quantity)
         {
-            var imageRetriever = new ImageRetriever();
+            //var result = new List<string>();
+            IImageRetriever imageRetriever = new ImageRetriever();
+            quantity = quantity > 0 ? quantity : 1;
 
-            var result = await imageRetriever.RetrieveImages(city);
-            return result.FirstOrDefault();
+            var retrievedImages = await imageRetriever.RetrieveImages(city, quantity);
+            //foreach (var image in retrievedImages)
+            //    result.A
+            return retrievedImages;
         }
     }
 }

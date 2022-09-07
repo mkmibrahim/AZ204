@@ -12,9 +12,6 @@ namespace backend.Controllers
     public class CityController : ControllerBase
     {
         private readonly ILogger<CityController> _logger;
-        //private IConfiguration configuration;
-
-        //private readonly int _sessionId;
         private readonly ICityInfoComposer _composer;
         private readonly ConfigurationClass _configClass;
 
