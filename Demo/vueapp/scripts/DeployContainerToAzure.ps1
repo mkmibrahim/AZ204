@@ -3,7 +3,6 @@ $azureLocation ="westeurope"
 $appName= "az204DemoApp123"
 $appServicePlanName= "az204DemoAppServicePlan123"
 $backendAppName = "az204DemoBackendApp123"
-#$apiServiceName ="az204api123"
 $AzureFunctionAppName = "az204DemoAzureFunctionBackendApp123"
 $AzureStorageAccountName = "az204demostorageaccount1"
 $AzureContainerRegistry = "az204containerregistry123"
@@ -13,7 +12,7 @@ $location = Get-Location
 
 cd..
 Write-Host "Creating Docker Image"
-#docker build -t $AzureContainerImageName .
+docker build -t $AzureContainerImageName .
 
 Write-Host "Creating Azure resource group " $resourceGroupName
 $resourceGroupCheck=(az group list --query "[?name=='$resourceGroupName']" -o tsv)
