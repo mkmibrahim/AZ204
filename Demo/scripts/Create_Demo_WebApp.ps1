@@ -56,7 +56,7 @@ az storage account create -n $AzureStorageAccountName -g $resourceGroupName --lo
 Write-Host "Creating Azure Function in Azure"
 az functionapp create -g $resourceGroupName -n $AzureFunctionAppName  --runtime dotnet --storage-account $AzureStorageAccountName --consumption-plan-location $azureLocation --functions-version 4
 
-Start-Sleep -Seconds 10
+Start-Sleep -Seconds 20
 
 Write-Host "Publishing AzureFunction"
 #az functionapp deployment source config-zip -g $resourceGroupName --name $AzureFunctionAppName --src $publishZipPath
