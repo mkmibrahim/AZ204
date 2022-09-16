@@ -47,6 +47,23 @@ az appservice plan create --name $appServicePlanContainerName --resource-group $
 
 az webapp create --resource-group $resourceGroupName --plan $appServicePlanContainerName --name $appContainerName --deployment-container-image-name az204containerregistry123.azurecr.io/demo_dockerize-vuejs-app:latest
 
-az webapp config appsettings set --resource-group $resourceGroupName --name $appContainerName --settings WEBSITES_PORT=8000
+az webapp config appsettings set --resource-group $resourceGroupName --name $appContainerName --settings WEBSITES_PORT=8080
+
+$AzurePrincipalId = (az webapp identity assign --resource-group $resourceGroupName --name $appContainerName --query principalId --output tsv)
+
+Write-Host "Azure PrincipalId is " $AzurePrincipalId
+
+$AzureSubscriptionId = (az account show --query id --output tsv)
+
+Write-Host "Azure subscriptionId is " $AzureSubscriptionId
+
+#Grant the managed identity permission to access the container registry:
+az role assignment create --assignee $AzurePrincipalId --scope /subscriptions/$AzureSubscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.ContainerRegistry/registries/az204containerregistry123 --role "AcrPull"
+
+#Configure app to use the managed identity to pull from Azure Container Reg
+az resource update --ids /subscriptions/$AzureSubscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Web/sites/$appName/config/web --set properties.acrUseManagedIdentityCreds=True
+
+#Deploy the image
+az webapp config container set --name $appContainerName --resource-group $resourceGroupName --docker-custom-image-name az204containerregistry123.azurecr.io/demo_dockerize-vuejs-app:latest --docker-registry-server-url https://az204containerregistry123.azurecr.io
 
 Set-Location $location
