@@ -1,4 +1,5 @@
 ﻿using CityImages.Models;
+using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,31 +9,29 @@ using Xunit;
 
 namespace CityImages.Tests.ModelsTest
 {
-    public class ImageRetrieverTests
+    public class BasicIntegrationTests :IClassFixture<WebApplicationFactory<CityImages.Startup>>
     {
-        [Fact]
-        public void CreateImageRetriever()
+        private readonly WebApplicationFactory<CityImages.Startup> _factory;
+
+        public BasicIntegrationTests(WebApplicationFactory<Startup> factory)
         {
-            // Arrange
-
-            // Act
-            var imageRetriever = new ImageRetriever();
-
-            //Assert
-            Assert.NotNull(imageRetriever);
+            _factory = factory;
         }
 
-        [Fact]
-        public async Task GetImageTestAsync()
+        [Theory]
+        [InlineData("/api/Images/get/amsterdam")]
+        public async Task Get_EndpointsReturnSuccess(string url)
         {
-            //Arrange
-            var imageRetriever = new ImageRetriever();
+            // Arrange
+            var client = _factory.CreateClient();
 
-            //Act
-            var result = await imageRetriever.RetrieveImages("Amsterdam");
+            // Act
+            var response = await client.GetAsync(url);
 
             // Assert
-            Assert.False(String.IsNullOrEmpty(result.FirstOrDefault()));
+            response.EnsureSuccessStatusCode();
+            Assert.Equal("application/json; charset=utf-8",
+                response.Content.Headers.ContentType.ToString());
         }
     }
 }

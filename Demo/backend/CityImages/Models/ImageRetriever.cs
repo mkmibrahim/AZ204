@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -8,6 +9,13 @@ namespace CityImages.Models
 {
     public class ImageRetriever : IImageRetriever
     {
+        private readonly UnsplashConfigurationClass _unsplashConfigurationClass;
+
+        public ImageRetriever(IOptions<UnsplashConfigurationClass> options = null)
+        {
+            _unsplashConfigurationClass = options.Value;
+        }
+
         public async Task<List<string>> RetrieveImages(string locationName, int numberOfImages = 1)
         {
             var result = new List<string>();
@@ -15,7 +23,7 @@ namespace CityImages.Models
             string uri = "https://api.unsplash.com/search/photos?query=" 
                 + locationName 
                 + "&per_page=30&orientation=portrait&page=1&client_id="
-                +Environment.GetEnvironmentVariable("Client_ID");
+                + _unsplashConfigurationClass.Client_ID;
 
             string responseBody="";
 
