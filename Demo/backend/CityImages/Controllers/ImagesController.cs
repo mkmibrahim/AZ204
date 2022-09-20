@@ -24,11 +24,14 @@ namespace CityImages.Controllers
         }
 
 
-        [HttpGet("{cityName}")]
+        [HttpGet("{cityName}/{quantity}")]
         [ActionName("Get")]
-        public async Task<List<string>> GetAsync(string cityName)
+        public async Task<List<string>> GetAsync(string cityName, string quantity = "1")
         {
-            var result = await _imageRetriever.RetrieveImages(cityName);
+            int.TryParse(quantity, out int intQuantity);
+            if (intQuantity == 0)
+                throw new ArgumentException("Quantity is not a number");
+            var result = await _imageRetriever.RetrieveImages(cityName, intQuantity);
             return result;
         }
     }

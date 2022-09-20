@@ -35,6 +35,10 @@ namespace CityImages
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
 
             app.UseSwagger(c =>
                 {

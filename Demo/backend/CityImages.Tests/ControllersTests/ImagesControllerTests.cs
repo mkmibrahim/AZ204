@@ -38,7 +38,7 @@ namespace CityImages.Tests.ControllersTests
             var cityName = "Amsterdam";
 
             // Act
-            var response = controller.GetAsync(cityName);
+            var response = controller.GetAsync(cityName, "1");
 
             // Assert
             Assert.NotNull(response);

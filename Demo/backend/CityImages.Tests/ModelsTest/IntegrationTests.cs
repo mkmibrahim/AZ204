@@ -1,11 +1,12 @@
-﻿using CityImages.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CityImages.Tests.ModelsTest
 {
@@ -19,7 +20,8 @@ namespace CityImages.Tests.ModelsTest
         }
 
         [Theory]
-        [InlineData("/api/Images/get/amsterdam")]
+        [InlineData("/api/Images/get/amsterdam/1")]
+        [InlineData("/api/Images/get/amsterdam/5")]
         public async Task Get_EndpointsReturnSuccess(string url)
         {
             // Arrange
@@ -33,5 +35,23 @@ namespace CityImages.Tests.ModelsTest
             Assert.Equal("application/json; charset=utf-8",
                 response.Content.Headers.ContentType.ToString());
         }
+
+        [Theory]
+        //[InlineData("/api/Images/get/")]
+        //[InlineData("/api/Images/get/amsterdam/")]
+        [InlineData("/api/Images/get/amsterdam/wordstring")]
+        public async Task GetWithoutcityName_ReturnsError(string url)
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync(url);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.UnprocessableEntity,response.StatusCode);
+        }
+
+
     }
 }
