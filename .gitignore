@@ -560,3 +560,4 @@ FodyWeavers.xsd
 
 *.v2
 appsettings.local.json
+Demo/backend/CityImages/appsettings.json

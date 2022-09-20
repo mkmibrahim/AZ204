@@ -1,0 +1,8 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=_CHANGE_ME;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+  "Unsplash": {
+    "Client_ID": "3ZT5O-ow2-bgTuuwZn7-jf8VS7PoZgTsKW5vj06c2T8"
+  }
+}

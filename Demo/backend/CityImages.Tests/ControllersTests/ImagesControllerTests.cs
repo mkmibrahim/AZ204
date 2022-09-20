@@ -1,4 +1,6 @@
 ﻿using CityImages.Controllers;
+using CityImages.Models;
+using CityImages.Tests.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -16,9 +18,10 @@ namespace CityImages.Tests.ControllersTests
             // Arrange
             var loggerMock = new Mock<ILogger<ImagesController>>();
             ILogger<ImagesController> logger = loggerMock.Object;
+            var imageRetrieverMock = new Mock<IImageRetriever>().Object;
 
             // Act
-            var controller = new ImagesController(logger);
+            var controller = new ImagesController(logger, imageRetrieverMock, optionsHelper.CreateOptions());
 
             // Assert
             Assert.NotNull(controller);
@@ -30,11 +33,12 @@ namespace CityImages.Tests.ControllersTests
             // Arrange
             var loggerMock = new Mock<ILogger<ImagesController>>();
             ILogger<ImagesController> logger = loggerMock.Object;
-            var controller = new ImagesController(logger);
+            var imageRetrieverMock = new Mock<IImageRetriever>().Object;
+            var controller = new ImagesController(logger, imageRetrieverMock, optionsHelper.CreateOptions());
             var cityName = "Amsterdam";
 
             // Act
-            var response = controller.Get(cityName);
+            var response = controller.GetAsync(cityName);
 
             // Assert
             Assert.NotNull(response);
