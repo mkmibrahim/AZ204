@@ -11,17 +11,17 @@ namespace CityImages.Models
     {
         private readonly UnsplashConfigurationClass _unsplashConfigurationClass;
 
-        public ImageRetriever(IOptions<UnsplashConfigurationClass> options = null)
+        public ImageRetriever(IOptions<UnsplashConfigurationClass> options)
         {
             _unsplashConfigurationClass = options.Value;
         }
 
-        public async Task<List<string>> RetrieveImages(string locationName, int numberOfImages = 1)
+        public async Task<List<string>> RetrieveImages(string cityName, int numberOfImages = 1)
         {
             var result = new List<string>();
             HttpClient client = new HttpClient();
             string uri = "https://api.unsplash.com/search/photos?query=" 
-                + locationName 
+                + cityName 
                 + "&per_page=30&orientation=portrait&page=1&client_id="
                 + _unsplashConfigurationClass.Client_ID;
 

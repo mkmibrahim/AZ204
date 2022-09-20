@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CityImages.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,20 +11,24 @@ namespace CityImages.Controllers
     [Route("api/[controller]/[action]")]
     public class ImagesController : ControllerBase
     {
-        private readonly ILogger<ImagesController> logger;
+        private readonly ILogger<ImagesController> _logger;
+        private readonly IImageRetriever _imageRetriever;
+        private readonly UnsplashConfigurationClass _unsplashConfigurationClass;
 
-        public ImagesController(ILogger<ImagesController> logger)
+        public ImagesController(ILogger<ImagesController> logger, IImageRetriever imageRetriever, 
+            IOptions<UnsplashConfigurationClass> options)
         {
-            this.logger = logger;
+            _logger = logger;
+            _imageRetriever = imageRetriever;
+            _unsplashConfigurationClass = options.Value;
         }
 
 
-        [HttpGet("{locationName}")]
+        [HttpGet("{cityName}")]
         [ActionName("Get")]
-        public List<string> Get(string cityName)
+        public async Task<List<string>> GetAsync(string cityName)
         {
-            var result = new List<string>();
-            result.Add("test1");
+            var result = await _imageRetriever.RetrieveImages(cityName);
             return result;
         }
     }
