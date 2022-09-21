@@ -16,12 +16,25 @@ namespace CityImages
         }
 
         public IConfiguration Configuration { get; }
+        private readonly string _policy = "CorsPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _policy,
+                                    policy =>
+                                    {
+                                        //policy.WithOrigins("http://localhost");
+                                        //policy.WithOrigins("https://localhost:8080/", "http://localhost:8080/")
+                                        policy.AllowAnyOrigin()
+                                                .AllowAnyHeader()
+                                                .AllowAnyMethod();
+                                    });
+            });
             services.Configure<UnsplashConfigurationClass>
                 (this.Configuration.GetSection("Unsplash"));
             services.AddScoped<IImageRetriever, ImageRetriever>();
@@ -35,6 +48,10 @@ namespace CityImages
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
 
             app.UseSwagger(c =>
                 {
@@ -45,6 +62,8 @@ namespace CityImages
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
+            app.UseCors(_policy);
 
             app.UseHttpsRedirection();
 
