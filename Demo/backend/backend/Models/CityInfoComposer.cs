@@ -46,7 +46,7 @@ namespace backend.Models
         {
             List<string> images = new List<string>();
             HttpClient client = new HttpClient();
-            string uri = _configClass.Url + cityName + "&quantity=" + quantity;
+            string uri = _configClass.Url + cityName + "/" + quantity;
             string responseBody="";
 
             try	
@@ -63,7 +63,7 @@ namespace backend.Models
             
             for(int i= 0; i<quantity;i++)
             { 
-                var imageUrlString = details.SelectToken("image")[0]?.ToObject<string>();
+                var imageUrlString = details.SelectToken("images")[0]?.ToObject<string>();
                 images.Add(imageUrlString);
             }
             return images;
