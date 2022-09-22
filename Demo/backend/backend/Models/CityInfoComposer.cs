@@ -46,7 +46,7 @@ namespace backend.Models
         {
             List<string> images = new List<string>();
             HttpClient client = new HttpClient();
-            string uri = _configClass.Url + cityName + "/" + quantity;
+            string uri = _configClass.Url + "?" + "cityName=" + cityName + "&quantity=" + quantity;
             string responseBody="";
 
             try	

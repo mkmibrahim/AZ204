@@ -20,8 +20,8 @@ namespace CityImages.Tests.ModelsTest
         }
 
         [Theory]
-        [InlineData("/api/Images/get/amsterdam/1")]
-        [InlineData("/api/Images/get/amsterdam/5")]
+        [InlineData("/api/Images/Get?cityName=Amsterdam")]
+        [InlineData("/api/Images/Get?cityName=Amsterdam&quantity=5")]
         public async Task Get_EndpointsReturnSuccess(string url)
         {
             // Arrange
@@ -37,9 +37,8 @@ namespace CityImages.Tests.ModelsTest
         }
 
         [Theory]
-        //[InlineData("/api/Images/get/")]
-        //[InlineData("/api/Images/get/amsterdam/")]
-        [InlineData("/api/Images/get/amsterdam/wordstring")]
+        [InlineData("/api/Images/get/")]
+        [InlineData("/api/Images/Get?cityName=Amsterdam&quantity=invalidInt")]
         public async Task GetWithoutcityName_ReturnsError(string url)
         {
             // Arrange
@@ -49,7 +48,7 @@ namespace CityImages.Tests.ModelsTest
             var response = await client.GetAsync(url);
 
             // Assert
-            Assert.Equal(HttpStatusCode.UnprocessableEntity,response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest,response.StatusCode);
         }
 
 
