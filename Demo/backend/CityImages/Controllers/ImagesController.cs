@@ -24,18 +24,19 @@ namespace CityImages.Controllers
         }
 
 
-        [HttpGet("{cityName}/{quantity}")]
-        [ActionName("Get")]
-        public async Task<ResponseMessage> GetAsync(string cityName, string quantity = "1")
+        [HttpGet]
+        public async Task<IActionResult> Get(string cityName, string quantity = "1")
         {
+            if (string.IsNullOrWhiteSpace(cityName))
+                return BadRequest("CityName not provided");
             int.TryParse(quantity, out int intQuantity);
             if (intQuantity == 0)
-                throw new ArgumentException("Quantity is not a number");
+                return BadRequest("Quantity is not a number");
             var imageString = await _imageRetriever.RetrieveImages(cityName, intQuantity);
             ResponseMessage responseMessage = new ResponseMessage() {
                                                     city = cityName, 
                                                     images = imageString};
-            return responseMessage;
+            return Ok(responseMessage);
         }
 
         public class ResponseMessage

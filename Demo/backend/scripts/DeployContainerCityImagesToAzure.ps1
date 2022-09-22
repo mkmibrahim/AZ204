@@ -1,15 +1,11 @@
 $resourceGroupName= "MsLearn"
 $azureLocation ="westeurope"
 $appName= "az204DemoApp123"
-#$appServicePlanName= "az204DemoAppServicePlan123"
-#$backendAppName = "az204DemoBackendApp123"
-#$AzureFunctionAppName = "az204DemoAzureFunctionBackendApp123"
-#$AzureStorageAccountName = "az204demostorageaccount1"
 $AzureContainerRegistry = "az204containerregistry123"
 $AzureContainerCityImagesImageName = "demo_dockerize-cityimages-app"
 $appServicePlanContainerName= "az204DemoAppServicePlanContainer123"
-#$cityimagesappContainerName = "az204DemoContainerCityImagesApp123"
-$cityimagesappContainerName = "az204DemoAzureFunctionBackendApp123"
+#$cityimagesappContainerName = "az204DemoAzureFunctionBackendApp123"
+$cityimagesappContainerName = "az204DemoAzureCityImagesApp123"
 
 $location = Get-Location
 
@@ -40,7 +36,6 @@ az acr login --name $AzureContainerRegistry
 
 Write-Host "Tagging image"
 docker tag demo_dockerize-cityimages-app az204containerregistry123.azurecr.io/demo_dockerize-cityimages-app:latest
-#docker tag $AzureContainerCityImagesImageName $AzureContainerRegistry.azurecr.io/$AzureContainerCityImagesImageName:latest
 
 docker push az204containerregistry123.azurecr.io/demo_dockerize-cityimages-app:latest
 
