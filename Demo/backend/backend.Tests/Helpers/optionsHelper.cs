@@ -11,7 +11,7 @@ namespace backend.Tests.Helpers
         public static IOptions<ConfigurationClass> CreateOptions() {
             ConfigurationClass configurationClass = new ConfigurationClass()
             {
-                Url = "http://localhost:7071/api/GetImages?city="
+                Url = "https://localhost:5001/api/Images/Get?cityName="
             };
             var options = Options.Create(configurationClass);
             return options;
