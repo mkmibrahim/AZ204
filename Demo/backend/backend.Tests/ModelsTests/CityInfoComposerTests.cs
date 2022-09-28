@@ -22,8 +22,8 @@ namespace backend.Tests.ModelsTests
             Assert.NotNull(composer);
         }
 
-        [Fact(Skip = "Only run when Azure function is available")]
-        //[Fact]
+        //[Fact(Skip = "Only run when CityImages API is available")]
+        [Fact]
         public async void GetInfoWithValidInput()
         {
             //Arrange
