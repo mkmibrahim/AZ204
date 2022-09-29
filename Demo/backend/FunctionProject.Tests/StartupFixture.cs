@@ -15,7 +15,7 @@ namespace FunctionProject.Tests
             var json = File.ReadAllText(Path.Join(path, "local.settings.json"));
             var parsed = JObject.Parse(json).Value<JObject>("Values");
 
-            foreach(var item in parsed)
+            foreach (var item in parsed)
             {
                 Environment.SetEnvironmentVariable(item.Key, item.Value.ToString());
             }

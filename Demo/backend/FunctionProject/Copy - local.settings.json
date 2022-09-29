@@ -1,0 +1,13 @@
+{
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "Values": {
+    "Client_ID": "q71oEwL_hHO6MKgqFadWWSvLnZ4ObvNb8pmhVBBykR4"
+  }
+}
