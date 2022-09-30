@@ -19,4 +19,7 @@
     <ProjectReference Include="..\CityImages\CityImages.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\CityImages\appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

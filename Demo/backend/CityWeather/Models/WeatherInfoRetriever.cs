@@ -20,9 +20,10 @@ namespace CityWeather.Models
             var result = new WeatherInfoObject();
             HttpClient client = new HttpClient();
             string uri = "https://api.openweathermap.org/data/2.5/weather?q="
-                +cityName
+                + cityName
                 + "&APPID="
-                + _openWeatherConfigurationClass.API_Key;
+                + _openWeatherConfigurationClass.API_Key
+                + "&units=metric";
 
             var responseBody = "";
 
