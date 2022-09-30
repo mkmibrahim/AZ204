@@ -12,7 +12,7 @@ namespace CityWeather.Tests.Helpers
         {
             OpenWeatherConfigurationClass configurationClass = new OpenWeatherConfigurationClass()
             {
-                API_Key = ""
+                API_Key = "2df118f180dd7070f23a3226cfccae75"
             };
             var options = Options.Create(configurationClass);
             return options;
