@@ -11,4 +11,6 @@ $scriptToRun = $PSScriptRoot+"\..\backend\scripts\DeployContainerbackendToAzure.
 & $scriptToRun
 $scriptToRun = $PSScriptRoot+"\..\backend\scripts\DeployContainerCityImagesToAzure.ps1"
 & $scriptToRun
+$scriptToRun = $PSScriptRoot+"\..\backend\scripts\DeployContainerCityWeatherToAzure.ps1"
+& $scriptToRun
 Set-Location $location
