@@ -2,6 +2,7 @@
 {
     public class ConfigurationClass
     {
-        public string Url {get; set; }
+        public string CityImagesUrl {get; set; }
+        public string CityWeatherUrl {get; set; }
     }
 }

@@ -41,9 +41,10 @@ namespace backend
                                                 .AllowAnyMethod();
                                     });
             });
+            services.AddScoped<IImageRetriever,  ImageRetriever>();
             services.AddScoped<ICityInfoComposer, CityInfoComposer>();
             services.Configure<ConfigurationClass>
-                (this.Configuration.GetSection("AzureFunctionConfiguration"));
+                (this.Configuration.GetSection("ConfigurationUrls"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

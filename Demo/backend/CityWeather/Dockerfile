@@ -1,4 +1,5 @@
-﻿# syntax=docker/dockerfile:1
+﻿#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# syntax=docker/dockerfile:1
 From mcr.microsoft.com/dotnet/sdk:3.1 AS build-env
 
 ENV ASPNETCORE_ENVIRONMENT=Production

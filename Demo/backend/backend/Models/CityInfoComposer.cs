@@ -16,17 +16,23 @@ namespace backend.Models
     public class CityInfoComposer : ICityInfoComposer
     {
         private readonly ConfigurationClass _configClass;
+        private readonly IImageRetriever _imageRetriever;
+        private readonly IWeatherRetriever _weatherRetriever;
 
-        public CityInfoComposer(IOptions<ConfigurationClass> options)
+        public CityInfoComposer(IOptions<ConfigurationClass> options, IImageRetriever imageRetriever,
+            IWeatherRetriever weatherRetriever)
         {
             _configClass = options.Value;
+            _imageRetriever = imageRetriever;
+            _weatherRetriever = weatherRetriever;
         }
 
         public async Task<CityInfo> GetInfo(string cityName)
         {
             var rng = new Random();
-            var imageString = await getImageAsync(cityName);
-            List<string> images = await getImageAsync(cityName,5);
+            var imageString = await _imageRetriever.getImageAsync(cityName);
+            List<string> images = await _imageRetriever.getImageAsync(cityName,5);
+            var weatherInfo = await _weatherRetriever.GetWeather(cityName);
             var result = new CityInfo
             {
                 Name = cityName,
@@ -35,40 +41,38 @@ namespace backend.Models
                 Images = images,
                 Id = 1,
                 Date = DateTime.Now,
-                Temperature = rng.Next(-20, 45),
-                Humidity = rng.Next(20, 80),
+                Temperature = weatherInfo.Temperature,
+                Humidity = weatherInfo.Humidity,
                 Summary = "This is a nice city"
             };
             return result;
         }
 
-        private async Task<List<string>> getImageAsync(string cityName, int quantity = 1)
-        {
-            List<string> images = new List<string>();
-            HttpClient client = new HttpClient();
-            string uri = _configClass.Url + "?" + "cityName=" + cityName + "&quantity=" + quantity;
-            string responseBody="";
+        //public async Task<List<string>> getImageAsync(string cityName, int quantity = 1)
+        //{
+        //    List<string> images = new List<string>();
+        //    HttpClient client = new HttpClient();
+        //    string uri = _configClass.Url + "?" + "cityName=" + cityName + "&quantity=" + quantity;
+        //    string responseBody="";
 
-            try	
-            {
-                responseBody = await client.GetStringAsync(uri);
-            }
-            catch(HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");	
-                Console.WriteLine("Message :{0} ",e.Message);
-            }
+        //    try	
+        //    {
+        //        responseBody = await client.GetStringAsync(uri);
+        //    }
+        //    catch(HttpRequestException e)
+        //    {
+        //        Console.WriteLine("\nException Caught!");	
+        //        Console.WriteLine("Message :{0} ",e.Message);
+        //    }
             
-            var details = JObject.Parse(responseBody);
+        //    var details = JObject.Parse(responseBody);
             
-            for(int i= 0; i<quantity;i++)
-            { 
-                var imageUrlString = details.SelectToken("images")[0]?.ToObject<string>();
-                images.Add(imageUrlString);
-            }
-            return images;
-
-
-        }
+        //    for(int i= 0; i<quantity;i++)
+        //    { 
+        //        var imageUrlString = details.SelectToken("images")[0]?.ToObject<string>();
+        //        images.Add(imageUrlString);
+        //    }
+        //    return images;
+        //}
     }
 }
