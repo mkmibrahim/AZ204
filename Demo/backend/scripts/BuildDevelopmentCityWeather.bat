@@ -1,0 +1,2 @@
+cd ..\CityWeather
+dotnet run

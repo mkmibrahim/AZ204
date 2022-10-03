@@ -22,11 +22,11 @@ namespace CityWeather.Controllers
         {
             if (string.IsNullOrEmpty(cityName))
                 return BadRequest("CityName not provided");
-            var response = _weatherInfoRetriever.RetrieveWeatherInfo(cityName);
+            var response = await _weatherInfoRetriever.RetrieveWeatherInfo(cityName);
             var result = new WeatherInfoResponseMessage()
             {
-                temperature = response.Result.Temperature,
-                humidity = response.Result.Humidity,
+                temperature = response.Temperature,
+                humidity = response.Humidity,
             };
             return Ok(result);
         }

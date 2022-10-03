@@ -19,4 +19,7 @@
     <ProjectReference Include="..\backend\backend.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\backend\appsettings.Development.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
