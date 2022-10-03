@@ -16,6 +16,7 @@ namespace backend.Tests.ModelsTests
             _factory = factory;
         }
 
+        [Trait("Category","Integration")]
         [Theory]
         [InlineData("api/City/Get/Paris")]
         public async Task Get_EndpointReturnsSuccess(string url)

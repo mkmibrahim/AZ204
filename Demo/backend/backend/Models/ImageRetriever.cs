@@ -10,22 +10,23 @@ namespace backend.Models
     public class ImageRetriever : IImageRetriever
     {
         private readonly ConfigurationClass _configClass;
+        private readonly HttpClient _httpClient;
 
-        public ImageRetriever(IOptions<ConfigurationClass> options)
+        public ImageRetriever(IOptions<ConfigurationClass> options, HttpClient httpClient)
         {
             _configClass = options.Value;
+            _httpClient = httpClient;
         }
 
         public async Task<List<string>> getImageAsync(string cityName, int quantity = 1)
         {
             List<string> images = new List<string>();
-            HttpClient client = new HttpClient();
             string uri = _configClass.CityImagesUrl + "?" + "cityName=" + cityName + "&quantity=" + quantity;
             string responseBody = "";
 
             try
             {
-                responseBody = await client.GetStringAsync(uri);
+                responseBody = await _httpClient.GetStringAsync(uri);
             }
             catch (Exception e)
             {

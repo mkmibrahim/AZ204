@@ -1,0 +1,1 @@
+Dotnet test ..\Demo.sln /p:configuration=Release /maxcpucount:1 /p:CollectCoverage=true /p:CoverletOutputFormat=\"cobertura,opencover,json\"  /p:CoverletOutput="..\UnitTestCoverageOutput\\" --logger:trx;LogFileName=unit_tests.xml /p:MergeWith="..\UnitTestCoverageOutput\coverage.json"
