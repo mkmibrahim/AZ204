@@ -2,6 +2,7 @@ using CityWeather.Data;
 using CityWeather.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,7 +39,9 @@ namespace CityWeather
             services.Configure<OpenWeatherConfigurationClass>
                 (this.Configuration.GetSection("OpenWeather"));
             services.AddScoped<IWeatherInfoRetriever,WeatherInfoRetriever>();
-            
+
+            services.Configure<DatabaseConfigurationClass>
+               (this.Configuration.GetSection("ConnectionStrings"));
             services.AddDbContext<AuthDbContext>();
 
         }
@@ -71,6 +74,13 @@ namespace CityWeather
             {
                 endpoints.MapControllers();
             });
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<AuthDbContext>();
+                //context.Database.EnsureCreated();
+                context.Database.Migrate();
+            }
         }
     }
 }
