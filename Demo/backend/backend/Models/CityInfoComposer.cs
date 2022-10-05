@@ -19,13 +19,20 @@ namespace backend.Models
         private readonly IImageRetriever _imageRetriever;
         private readonly IWeatherRetriever _weatherRetriever;
 
-        public CityInfoComposer(IOptions<ConfigurationClass> options, IImageRetriever imageRetriever,
-            IWeatherRetriever weatherRetriever)
+        public CityInfoComposer(IOptions<ConfigurationClass> options, 
+            IImageRetriever imageRetriever, IWeatherRetriever weatherRetriever)
         {
             _configClass = options.Value;
             _imageRetriever = imageRetriever;
             _weatherRetriever = weatherRetriever;
         }
+
+        //public CityInfoComposer(IOptions<ConfigurationClass> options)
+        //{
+        //    _configClass = options.Value;
+        //    //_imageRetriever = imageRetriever;
+        //    //_weatherRetriever = weatherRetriever;
+        //}
 
         public async Task<CityInfo> GetInfo(string cityName)
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using backend.Models;
 using Microsoft.AspNetCore.Builder;
@@ -43,7 +44,10 @@ namespace backend
                                                 .AllowAnyMethod();
                                     });
             });
+            HttpClient httpClient = new HttpClient();
+            services.AddSingleton<HttpClient>(httpClient);
             services.AddScoped<IImageRetriever,  ImageRetriever>();
+            services.AddScoped<IWeatherRetriever, WeatherRetriever>();
             services.AddScoped<ICityInfoComposer, CityInfoComposer>();
             services.Configure<ConfigurationClass>
                 (this.Configuration.GetSection("ConfigurationUrls"));

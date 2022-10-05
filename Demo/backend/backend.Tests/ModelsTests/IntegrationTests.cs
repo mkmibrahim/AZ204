@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Testing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,8 +17,9 @@ namespace backend.Tests.ModelsTests
             _factory = factory;
         }
 
+        
         [Trait("Category","Integration")]
-        [Theory]
+        [Theory (Skip ="Integration")]
         [InlineData("api/City/Get/Paris")]
         public async Task Get_EndpointReturnsSuccess(string url)
         {

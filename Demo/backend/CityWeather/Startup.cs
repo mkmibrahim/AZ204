@@ -1,3 +1,4 @@
+using CityWeather.Data;
 using CityWeather.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,8 @@ namespace CityWeather
             services.Configure<OpenWeatherConfigurationClass>
                 (this.Configuration.GetSection("OpenWeather"));
             services.AddScoped<IWeatherInfoRetriever,WeatherInfoRetriever>();
+            
+            services.AddDbContext<AuthDbContext>();
 
         }
 

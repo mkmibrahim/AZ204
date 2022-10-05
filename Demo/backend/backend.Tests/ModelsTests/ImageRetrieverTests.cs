@@ -27,27 +27,8 @@ namespace backend.Tests.ModelsTests
             Assert.NotNull(retriever);
         }
 
-        [Trait("Category","Integration")]
-        [Theory]
-        [InlineData("Paris", 1)]
-        [InlineData("Amsterdam", 5)]
-        public async Task RetrieveImagesAsync(string cityName, int quantity)
-        {
-            // Arrange
-            var retriever = new ImageRetriever(optionsHelper.CreateOptions(), new HttpClient());
-
-            // Act
-            var images = await retriever.getImageAsync(cityName, quantity);
-
-            // Assert
-            Assert.NotNull(images);
-            Assert.Equal(quantity, images.Count);
-            for(int i = 0; i < images.Count; i++)
-                Assert.False(String.IsNullOrEmpty(images[i]));
-        }
-
         [Fact]
-        public async Task RetrieveImages1()
+        public async Task RetrieveImages()
         {
             // Arrange
             string cityName = "Amsterdam";
