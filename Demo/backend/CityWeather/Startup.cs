@@ -40,9 +40,12 @@ namespace CityWeather
                 (this.Configuration.GetSection("OpenWeather"));
             services.AddScoped<IWeatherInfoRetriever,WeatherInfoRetriever>();
 
+            services.AddScoped<IWeatherInfoCollector, WeatherInfoCollector>();
+
             services.Configure<DatabaseConfigurationClass>
                (this.Configuration.GetSection("ConnectionStrings"));
-            services.AddDbContext<AuthDbContext>();
+            services.AddDbContext<WeatherDbContext>();
+
 
         }
 
@@ -75,10 +78,11 @@ namespace CityWeather
                 endpoints.MapControllers();
             });
 
+
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetRequiredService<AuthDbContext>();
-                //context.Database.EnsureCreated();
+                var context = serviceScope.ServiceProvider.GetRequiredService<WeatherDbContext>();
+                //Execute following command in VS Package Manager Console: Add-Migration InitialCreate -Context WeatherDbContext
                 context.Database.Migrate();
             }
         }

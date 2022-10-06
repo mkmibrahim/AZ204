@@ -9,12 +9,12 @@ namespace CityWeather.Controllers
     public class WeatherController : ControllerBase
     {
         private readonly ILogger<WeatherController> _logger;
-        private readonly IWeatherInfoRetriever _weatherInfoRetriever;
+        private readonly IWeatherInfoCollector _weatherInfoCollector;
 
-        public WeatherController(ILogger<WeatherController> logger, IWeatherInfoRetriever weatherInfoRetriever)
+        public WeatherController(ILogger<WeatherController> logger, IWeatherInfoCollector weatherInfoCollector)
         {
             _logger = logger;
-            _weatherInfoRetriever = weatherInfoRetriever;
+            _weatherInfoCollector = weatherInfoCollector;
         }
 
         [HttpGet]
@@ -22,7 +22,7 @@ namespace CityWeather.Controllers
         {
             if (string.IsNullOrEmpty(cityName))
                 return BadRequest("CityName not provided");
-            var response = await _weatherInfoRetriever.RetrieveWeatherInfo(cityName);
+            var response = await _weatherInfoCollector.GetWeatherInfo(cityName);
             var result = new WeatherInfoResponseMessage()
             {
                 temperature = response.Temperature,

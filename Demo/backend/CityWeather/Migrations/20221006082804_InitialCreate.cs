@@ -29,6 +29,11 @@ namespace CityWeather.Migrations
                 table: "Cities",
                 columns: new[] { "cityId", "cityName", "counteryName" },
                 values: new object[] { 2, "Paris", "France" });
+
+            migrationBuilder.InsertData(
+                table: "Cities",
+                columns: new[] { "cityId", "cityName", "counteryName" },
+                values: new object[] { 3, "Cairo", "Egypt" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace CityWeather.Tests.ControllerTests
 {
-    public class weatherInfoRetrieverFake : IWeatherInfoRetriever
+    public class weatherInfoCollectorFake : IWeatherInfoCollector
     {
-        public weatherInfoRetrieverFake()
+        public weatherInfoCollectorFake()
         {
 
         }
 
-        public Task<WeatherInfoObject> RetrieveWeatherInfo(string cityName)
+        public Task<WeatherInfoObject> GetWeatherInfo(string cityName)
         {
             var result = new WeatherInfoObject();
             var fakeTask = Task.FromResult(result);

@@ -10,14 +10,14 @@ namespace CityWeather.Tests.ControllerTests
     public class WeatherControllerTests
     {
         private readonly WeatherController _weatherController;
-        private readonly IWeatherInfoRetriever _weatherInfoRetriever;
+        private readonly IWeatherInfoCollector _weatherInfoCollector;
 
         public WeatherControllerTests()
         {
             var loggerMock = new Mock<ILogger<WeatherController>>();
             ILogger<WeatherController> logger = loggerMock.Object;
-            _weatherInfoRetriever = new weatherInfoRetrieverFake();
-            _weatherController = new WeatherController(logger, _weatherInfoRetriever);
+            _weatherInfoCollector = new weatherInfoCollectorFake();
+            _weatherController = new WeatherController(logger, _weatherInfoCollector);
         }
 
         [Fact]
