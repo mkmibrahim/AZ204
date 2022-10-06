@@ -15,9 +15,9 @@ namespace CityWeather.Models
             _openWeatherConfigurationClass = options.Value;
         }
 
-        public async Task<WeatherInfoObject> RetrieveWeatherInfo(string cityName)
+        public async Task<CurrentWeatherObject> RetrieveWeatherInfo(string cityName)
         {
-            var result = new WeatherInfoObject();
+            var result = new CurrentWeatherObject();
             HttpClient client = new HttpClient();
             string uri = "https://api.openweathermap.org/data/2.5/weather?q="
                 + cityName
