@@ -40,13 +40,13 @@ namespace CityWeather
                 (this.Configuration.GetSection("OpenWeather"));
             services.AddScoped<IWeatherInfoRetriever,WeatherInfoRetriever>();
 
-            services.AddScoped<IWeatherInfoCollector, WeatherInfoCollector>();
-
             services.Configure<DatabaseConfigurationClass>
                (this.Configuration.GetSection("ConnectionStrings"));
             services.AddDbContext<WeatherDbContext>();
 
+            services.AddScoped<IWeatherHistoryManager,WeatherHistoryManager>();
 
+            services.AddScoped<IWeatherInfoCollector, WeatherInfoCollector>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

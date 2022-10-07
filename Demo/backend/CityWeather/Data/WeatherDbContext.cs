@@ -16,11 +16,15 @@ namespace CityWeather.Data
         {
             string folder = Directory.GetCurrentDirectory();
             DbPath = Path.Join(folder, options2.Value.DefaultConnection);
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite($"Data Source = {DbPath}");
+            if (!options.IsConfigured)
+            {
+                options.UseSqlite($"Data Source = {DbPath}");
+            }
         }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)

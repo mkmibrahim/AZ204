@@ -3,6 +3,7 @@ using CityWeather.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Linq;
 using Xunit;
 
 namespace CityWeather.Tests.ControllerTests
@@ -76,6 +77,9 @@ namespace CityWeather.Tests.ControllerTests
             Assert.IsType<int>(weatherInfoResponse.humidity);
             Assert.Equal(21.0M, weatherInfoResponse.temperature);
             Assert.Equal(40, weatherInfoResponse.humidity);
+            Assert.Single(weatherInfoResponse.History);
+            Assert.Equal(21.0M, weatherInfoResponse.History.First().temperature);
+            Assert.Equal(40, weatherInfoResponse.History.First().humidity);
 
         }
     }
