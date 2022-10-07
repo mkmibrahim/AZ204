@@ -6,7 +6,10 @@ namespace CityWeather.Models
     {
         private readonly WeatherDbContext _weatherDbContext;
 
-
+        public WeatherHistoryManager(WeatherDbContext weatherDbContext)
+        {
+            _weatherDbContext = weatherDbContext;
+        }
 
         public void AddWeatherInfo(WeatherInfoInstance weatherInfoInstance)
         {

@@ -1,4 +1,5 @@
-﻿using CityWeather.Models;
+﻿using CityWeather.Data;
+using CityWeather.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
@@ -16,6 +17,18 @@ namespace CityWeather.Tests.Helpers
             OpenWeatherConfigurationClass configurationClass = new OpenWeatherConfigurationClass()
             {
                 API_Key = configuration.GetSection("OpenWeather").GetValue<string>("API_Key")
+            };
+            var options = Options.Create(configurationClass);
+            
+            return options;
+        }
+
+        public static IOptions<DatabaseConfigurationClass> CreateOptionsDb()
+        {
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            DatabaseConfigurationClass configurationClass = new DatabaseConfigurationClass()
+            {
+                DefaultConnection = configuration.GetSection("ConnectionStrings").GetValue<string>("DefaultConnection")
             };
             var options = Options.Create(configurationClass);
             

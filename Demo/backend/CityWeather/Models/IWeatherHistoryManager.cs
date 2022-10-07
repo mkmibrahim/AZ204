@@ -5,5 +5,6 @@ namespace CityWeather.Models
     public interface IWeatherHistoryManager
     {
         public void AddWeatherInfo (WeatherInfoInstance weatherInfoInstance);
+
     }
 }

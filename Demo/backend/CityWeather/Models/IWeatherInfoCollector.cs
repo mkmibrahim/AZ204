@@ -18,7 +18,8 @@ namespace CityWeather.Models
 
     public class WeatherInfoInstance
     {
-        public DateTime Time {get;set;}
+        public string cityName {get; set; }
+        public DateTime Time {get;set; }
         public decimal Temperature { get; set; }
         public int Humidity { get; set; }
     }
