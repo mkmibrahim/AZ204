@@ -11,6 +11,7 @@ namespace CityWeather.Models
 
     public class WeatherInfoObject
     {
+        public DateTime Time { get; set; }
         public decimal Temperature { get; set; }
         public int Humidity { get; set; }
         public List<WeatherInfoInstance> History { get; set; }

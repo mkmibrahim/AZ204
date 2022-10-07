@@ -22,7 +22,11 @@ namespace CityWeather.Tests.ModelsTests
             };
             weatherRetrieverMock.Setup(w => w.RetrieveWeatherInfo(It.IsAny<string>()))
                 .Returns(Task.FromResult(mockWeatherInfoObject));
-            _weatherInfoCollector = new WeatherInfoCollector(weatherRetrieverMock.Object);
+
+            var weatherHistoryManagerFace = new WeatherHistoryManagerFake();
+
+            _weatherInfoCollector = new WeatherInfoCollector(weatherRetrieverMock.Object, 
+                                            weatherHistoryManagerFace);
         }
 
         [Fact]
@@ -46,6 +50,7 @@ namespace CityWeather.Tests.ModelsTests
             var response = await _weatherInfoCollector.GetWeatherInfo("Paris");
 
             // Assert
+            Assert.IsType<DateTime>(response.Time);
             Assert.IsType<decimal>(response.Temperature);
             Assert.IsType<int>(response.Humidity);
             Assert.True(response.Temperature != 0);

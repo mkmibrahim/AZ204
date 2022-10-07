@@ -19,6 +19,15 @@ namespace CityWeather.Tests.ControllerTests
             var fakeTask = Task.FromResult(result);
             result.Temperature = 21.0M;
             result.Humidity = 40;
+            result.Time = DateTime.Now;
+            result.History = new List<WeatherInfoInstance>();
+            result.History.Add(new WeatherInfoInstance()
+            {
+                Time = DateTime.Now,
+                cityName = cityName,
+                Temperature = 21.0M,
+                Humidity = 40
+            });
             return fakeTask;
         }
     }
