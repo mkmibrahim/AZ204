@@ -7,19 +7,19 @@ namespace CityWeather.Tests.ModelsTests
 {
     internal class WeatherHistoryManagerFake : IWeatherHistoryManager
     {
-        List<WeatherInfoInstance> _list = new List<WeatherInfoInstance>();
-        public int AddWeatherInfo(WeatherInfoInstance weatherInfoInstance)
+        List<WeatherInfoObject> _list = new List<WeatherInfoObject>();
+        public int AddWeatherInfo(WeatherInfoObject weatherInfoInstance)
         {
             _list.Add(weatherInfoInstance);
             return _list.Count;
         }
 
-        public WeatherInfoInstance GetWeatherInfo(int id)
+        public WeatherInfoObject GetWeatherInfo(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<WeatherInfoInstance> GetWeatherInfo(string cityName)
+        public List<WeatherInfoObject> GetWeatherInfo(string cityName)
         {
             return _list;
         }

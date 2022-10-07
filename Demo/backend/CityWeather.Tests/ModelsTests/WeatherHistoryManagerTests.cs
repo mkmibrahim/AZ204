@@ -20,15 +20,15 @@ namespace CityWeather.Tests.ModelsTests
         private WeatherDbContext _context;
 
         #region Helpers
-        static void AssertWeatherRecordsEqual(WeatherInfoInstance weatherInfoInstance, WeatherInfoInstance retrievedRecord)
+        static void AssertWeatherRecordsEqual(WeatherInfoObject WeatherInfoObject, WeatherInfoObject retrievedRecord)
         {
-            Assert.Equal(weatherInfoInstance.Time, retrievedRecord.Time);
-            Assert.Equal(weatherInfoInstance.cityName, retrievedRecord.cityName);
-            Assert.Equal(weatherInfoInstance.Temperature, retrievedRecord.Temperature);
-            Assert.Equal(weatherInfoInstance.Humidity, retrievedRecord.Humidity);
+            Assert.Equal(WeatherInfoObject.Time, retrievedRecord.Time);
+            Assert.Equal(WeatherInfoObject.cityName, retrievedRecord.cityName);
+            Assert.Equal(WeatherInfoObject.Temperature, retrievedRecord.Temperature);
+            Assert.Equal(WeatherInfoObject.Humidity, retrievedRecord.Humidity);
         }
         int newRecordId = 0;
-        WeatherInfoInstance weatherInfoInstance = new WeatherInfoInstance
+        WeatherInfoObject WeatherInfoObject = new WeatherInfoObject
         {
             Time = DateTime.Now,
             cityName = "Amsterdam",
@@ -81,7 +81,7 @@ namespace CityWeather.Tests.ModelsTests
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
               
                 // Act
-                newRecordId = manager.AddWeatherInfo(weatherInfoInstance);
+                newRecordId = manager.AddWeatherInfo(WeatherInfoObject);
             }
 
             // Assert
@@ -90,7 +90,7 @@ namespace CityWeather.Tests.ModelsTests
             {
                 var managerToCheck = new WeatherHistoryManager(_context);
                 var retrievedRecord = managerToCheck.GetWeatherInfo(newRecordId);
-                AssertWeatherRecordsEqual(weatherInfoInstance, retrievedRecord);
+                AssertWeatherRecordsEqual(WeatherInfoObject, retrievedRecord);
             }
         }
 
@@ -98,14 +98,14 @@ namespace CityWeather.Tests.ModelsTests
         public void AddWeatherInfo_NewCityTest()
         {
             // Arrange
-            weatherInfoInstance.cityName = "NewCity";
+            WeatherInfoObject.cityName = "NewCity";
             
             using (_context = new WeatherDbContext(_options, _optionsdb))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
 
                 // Act
-                newRecordId = manager.AddWeatherInfo(weatherInfoInstance);
+                newRecordId = manager.AddWeatherInfo(WeatherInfoObject);
             }
 
             // Assert
@@ -114,7 +114,7 @@ namespace CityWeather.Tests.ModelsTests
             {
                 var managerToCheck = new WeatherHistoryManager(_context);
                 var retrievedRecord = managerToCheck.GetWeatherInfo(newRecordId);
-                AssertWeatherRecordsEqual(weatherInfoInstance, retrievedRecord);
+                AssertWeatherRecordsEqual(WeatherInfoObject, retrievedRecord);
             }
         }
 
@@ -126,17 +126,17 @@ namespace CityWeather.Tests.ModelsTests
             using (_context = new WeatherDbContext(_options, _optionsdb))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
-                WeatherInfoInstance previousWeatherInfoInstance = new WeatherInfoInstance
+                WeatherInfoObject previousWeatherInfoObject = new WeatherInfoObject
                 {
-                    Time = weatherInfoInstance.Time,
-                    cityName = weatherInfoInstance.cityName,
+                    Time = WeatherInfoObject.Time,
+                    cityName = WeatherInfoObject.cityName,
                     Temperature = 25,
                     Humidity = 15
                 };
-                manager.AddWeatherInfo(previousWeatherInfoInstance);
+                manager.AddWeatherInfo(previousWeatherInfoObject);
 
                 // Act
-                newRecordId = manager.AddWeatherInfo(weatherInfoInstance);
+                newRecordId = manager.AddWeatherInfo(WeatherInfoObject);
             }
 
             // Assert
@@ -145,7 +145,7 @@ namespace CityWeather.Tests.ModelsTests
             {
                 var managerToCheck = new WeatherHistoryManager(_context);
                 var retrievedRecord = managerToCheck.GetWeatherInfo(newRecordId);
-                AssertWeatherRecordsEqual(weatherInfoInstance, retrievedRecord);
+                AssertWeatherRecordsEqual(WeatherInfoObject, retrievedRecord);
             }
         }
         #endregion
@@ -158,11 +158,11 @@ namespace CityWeather.Tests.ModelsTests
             using (_context = new WeatherDbContext(_options, _optionsdb))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
-                newRecordId = manager.AddWeatherInfo(weatherInfoInstance);
+                newRecordId = manager.AddWeatherInfo(WeatherInfoObject);
                 for (int i = 0; i < 9; i++)
                 {
-                    weatherInfoInstance.Time = weatherInfoInstance.Time.AddMinutes(5);
-                    newRecordId = manager.AddWeatherInfo(weatherInfoInstance);
+                    WeatherInfoObject.Time = WeatherInfoObject.Time.AddMinutes(5);
+                    newRecordId = manager.AddWeatherInfo(WeatherInfoObject);
                 }
             }
 
@@ -170,11 +170,11 @@ namespace CityWeather.Tests.ModelsTests
             using (_context = new WeatherDbContext(_options, _optionsdb))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
-                var retrievedRecords = manager.GetWeatherInfo(weatherInfoInstance.cityName);
+                var retrievedRecords = manager.GetWeatherInfo(WeatherInfoObject.cityName);
 
                 // Assert
                 Assert.Equal(10, retrievedRecords.Count);
-                AssertWeatherRecordsEqual(weatherInfoInstance, retrievedRecords.FirstOrDefault());
+                AssertWeatherRecordsEqual(WeatherInfoObject, retrievedRecords.FirstOrDefault());
             }
         }
         #endregion

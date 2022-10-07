@@ -20,8 +20,8 @@ namespace CityWeather.Tests.ControllerTests
             result.Temperature = 21.0M;
             result.Humidity = 40;
             result.Time = DateTime.Now;
-            result.History = new List<WeatherInfoInstance>();
-            result.History.Add(new WeatherInfoInstance()
+            result.History = new List<WeatherInfoObject>();
+            result.History.Add(new WeatherInfoObject()
             {
                 Time = DateTime.Now,
                 cityName = cityName,

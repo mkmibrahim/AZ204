@@ -21,14 +21,14 @@ namespace CityWeather.Models
             var retrieverInfo = await _weatherInfoRetriever.RetrieveWeatherInfo(cityName);
 
             // Add weatherinfo to history
-            var weatherInfoInstance = new WeatherInfoInstance
+            var WeatherInfoObject = new WeatherInfoObject
             {
                 cityName = cityName,
                 Time = time,
                 Temperature = retrieverInfo.Temperature,
                 Humidity = retrieverInfo.Humidity
             };
-            _weatherHistoryManager.AddWeatherInfo(weatherInfoInstance);
+            _weatherHistoryManager.AddWeatherInfo(WeatherInfoObject);
 
             // retrieve weatherinfo history
             var weatherhistory = _weatherHistoryManager.GetWeatherInfo(cityName);
