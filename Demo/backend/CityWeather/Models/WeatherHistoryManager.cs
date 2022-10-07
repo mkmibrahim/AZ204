@@ -14,7 +14,7 @@ namespace CityWeather.Models
             _weatherDbContext = weatherDbContext;
         }
 
-        public int AddWeatherInfo(WeatherInfoInstance weatherInfo)
+        public int AddWeatherInfo(WeatherInfoObject weatherInfo)
         {
             int result = 0;
             // check city exists
@@ -64,9 +64,9 @@ namespace CityWeather.Models
             return result;
         }
 
-        public WeatherInfoInstance GetWeatherInfo(int id)
+        public WeatherInfoObject GetWeatherInfo(int id)
         {
-            var result = new WeatherInfoInstance();
+            var result = new WeatherInfoObject();
             
             var weatherdatarecord = _weatherDbContext.WeatherData
                                         .Where(wd => wd.Id == id)
@@ -91,9 +91,9 @@ namespace CityWeather.Models
 
         }
 
-        public List<WeatherInfoInstance> GetWeatherInfo(string cityName)
+        public List<WeatherInfoObject> GetWeatherInfo(string cityName)
         {
-            var result = new List<WeatherInfoInstance>();
+            var result = new List<WeatherInfoObject>();
             var cityRecord = _weatherDbContext.Cities
                                 .Where(c => c.cityName == cityName)
                                 .ToList().FirstOrDefault();
@@ -107,14 +107,14 @@ namespace CityWeather.Models
 
                 foreach(var weatherInfoRecord in weatherInfoRecords)
                 {
-                    var newWeatherInfoInstance = new WeatherInfoInstance
+                    var newWeatherInfoObject = new WeatherInfoObject
                     {
                         Time = weatherInfoRecord.time,
                         cityName = cityRecord.cityName,
                         Temperature = weatherInfoRecord.temperature,
                         Humidity = weatherInfoRecord.humidity,
                     };
-                    result.Add(newWeatherInfoInstance);
+                    result.Add(newWeatherInfoObject);
                 }
             }
             

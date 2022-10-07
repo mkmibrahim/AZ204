@@ -5,11 +5,11 @@ namespace CityWeather.Models
 {
     public interface IWeatherHistoryManager
     {
-        public int AddWeatherInfo (WeatherInfoInstance weatherInfoInstance);
+        public int AddWeatherInfo (WeatherInfoObject WeatherInfoObject);
 
-        public WeatherInfoInstance GetWeatherInfo(int id);
+        public WeatherInfoObject GetWeatherInfo(int id);
 
-        public List<WeatherInfoInstance> GetWeatherInfo(string cityName);
+        public List<WeatherInfoObject> GetWeatherInfo(string cityName);
 
     }
 }
