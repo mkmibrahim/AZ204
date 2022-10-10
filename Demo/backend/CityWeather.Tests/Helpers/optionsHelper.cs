@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Text;
 
 namespace CityWeather.Tests.Helpers
@@ -28,6 +29,7 @@ namespace CityWeather.Tests.Helpers
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             DatabaseConfigurationClass configurationClass = new DatabaseConfigurationClass()
             {
+                ConnectionPath = Directory.GetCurrentDirectory(),
                 DefaultConnection = configuration.GetSection("ConnectionStrings").GetValue<string>("DefaultConnection")
             };
             var options = Options.Create(configurationClass);

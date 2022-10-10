@@ -14,7 +14,7 @@ namespace CityWeather.Data
 
         public WeatherDbContext(DbContextOptions<WeatherDbContext> options, IOptions<DatabaseConfigurationClass> options2) : base (options)
         {
-            string folder = Directory.GetCurrentDirectory();
+            string folder = options2.Value.ConnectionPath;
             DbPath = Path.Join(folder, options2.Value.DefaultConnection);
             
         }
@@ -23,12 +23,15 @@ namespace CityWeather.Data
         {
             if (!options.IsConfigured)
             {
-                options.UseSqlite($"Data Source = {DbPath}");
+                //options.UseSqlite($"Data Source = {DbPath}");
+                options.UseMySQL("server=localhost;database=library;user=user;password=password");
             }
         }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<cityData>(entity =>
             { 
                 entity.HasKey(e => e.cityId);

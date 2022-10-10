@@ -6,7 +6,7 @@ $cityweatherappContainerName = "az204DemoAzureCityWeatherApp123"
 
 $resourceGroupName= "MsLearn"
 $cityweatherappContainerName = "az204DemoAzureCityWeatherApp123"
-$containerMountPath = "/persdirectory"
+$containerMountPath = "/Foo"
 
 $StorageKey=(az storage account keys list --resource-group $resourceGroupNamePers --account-name $StorageAccountName --query "[0].value" --output tsv)
 Write-Host "Storage key of file share is " $StorageKey
