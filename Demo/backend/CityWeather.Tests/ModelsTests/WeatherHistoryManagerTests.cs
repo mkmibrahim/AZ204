@@ -1,7 +1,6 @@
 ﻿using CityWeather.Data;
 using CityWeather.Models;
 using CityWeather.Tests.Helpers;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -14,7 +13,6 @@ namespace CityWeather.Tests.ModelsTests
 {
     public class WeatherHistoryManagerTests :IDisposable
     {
-        private SqliteConnection _connection;
         private readonly DbContextOptions<WeatherDbContext> _options;
         private readonly IOptions<DatabaseConfigurationClass> _optionsdb;
         private WeatherDbContext _context;
@@ -38,22 +36,17 @@ namespace CityWeather.Tests.ModelsTests
         #endregion
         public WeatherHistoryManagerTests()
         {
-            _connection = new SqliteConnection("DataSource=:memory:");
-            _connection.Open();
+            //_options = optionsHelper.CreateOptionsDb();
 
-            _options = new DbContextOptionsBuilder<WeatherDbContext>()
-                        .UseSqlite(_connection)
-                        .Options;
+            // _optionsdb = optionsHelper.CreateOptionsDb();
 
-             _optionsdb = optionsHelper.CreateOptionsDb();
-
-            using (_context = new WeatherDbContext(_options, _optionsdb))
-                _context.Database.EnsureCreated();
+            //using (_context = new WeatherDbContext(_options))
+            //    _context.Database.EnsureCreated();
         }
 
         public void Dispose()
         {
-            _connection.Close();
+            //_connection.Close();
         }
 
 
@@ -76,7 +69,7 @@ namespace CityWeather.Tests.ModelsTests
         {
             // Arrange
             
-            using (_context = new WeatherDbContext(_options, _optionsdb))
+            using (_context = new WeatherDbContext(_options))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
               
@@ -86,7 +79,7 @@ namespace CityWeather.Tests.ModelsTests
 
             // Assert
             Assert.True(newRecordId > 0);
-            using (_context = new WeatherDbContext(_options, _optionsdb))
+            using (_context = new WeatherDbContext(_options))
             {
                 var managerToCheck = new WeatherHistoryManager(_context);
                 var retrievedRecord = managerToCheck.GetWeatherInfo(newRecordId);
@@ -100,7 +93,7 @@ namespace CityWeather.Tests.ModelsTests
             // Arrange
             WeatherInfoObject.cityName = "NewCity";
             
-            using (_context = new WeatherDbContext(_options, _optionsdb))
+            using (_context = new WeatherDbContext(_options))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
 
@@ -110,7 +103,7 @@ namespace CityWeather.Tests.ModelsTests
 
             // Assert
             Assert.True(newRecordId > 0);
-            using (_context = new WeatherDbContext(_options, _optionsdb))
+            using (_context = new WeatherDbContext(_options))
             {
                 var managerToCheck = new WeatherHistoryManager(_context);
                 var retrievedRecord = managerToCheck.GetWeatherInfo(newRecordId);
@@ -123,7 +116,7 @@ namespace CityWeather.Tests.ModelsTests
         public void AddWeatherInfo_UpdateExistingRecord()
         {
             // Arrange
-            using (_context = new WeatherDbContext(_options, _optionsdb))
+            using (_context = new WeatherDbContext(_options))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
                 WeatherInfoObject previousWeatherInfoObject = new WeatherInfoObject
@@ -141,7 +134,7 @@ namespace CityWeather.Tests.ModelsTests
 
             // Assert
             Assert.True(newRecordId > 0);
-            using (_context = new WeatherDbContext(_options, _optionsdb))
+            using (_context = new WeatherDbContext(_options))
             {
                 var managerToCheck = new WeatherHistoryManager(_context);
                 var retrievedRecord = managerToCheck.GetWeatherInfo(newRecordId);
@@ -155,7 +148,7 @@ namespace CityWeather.Tests.ModelsTests
         public void GetWeatherInfoUsingCityName()
         {
             // Arrange
-            using (_context = new WeatherDbContext(_options, _optionsdb))
+            using (_context = new WeatherDbContext(_options))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
                 newRecordId = manager.AddWeatherInfo(WeatherInfoObject);
@@ -167,7 +160,7 @@ namespace CityWeather.Tests.ModelsTests
             }
 
             // Act
-            using (_context = new WeatherDbContext(_options, _optionsdb))
+            using (_context = new WeatherDbContext(_options))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
                 var retrievedRecords = manager.GetWeatherInfo(WeatherInfoObject.cityName);
