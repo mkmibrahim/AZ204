@@ -47,6 +47,9 @@ namespace CityWeather
             services.AddScoped<IWeatherHistoryManager,WeatherHistoryManager>();
 
             services.AddScoped<IWeatherInfoCollector, WeatherInfoCollector>();
+
+            services.AddDbContext<WeatherDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

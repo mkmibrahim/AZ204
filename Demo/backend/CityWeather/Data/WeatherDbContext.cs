@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
+using System.Configuration;
 using System.IO;
 
 namespace CityWeather.Data
@@ -12,20 +14,22 @@ namespace CityWeather.Data
 
         public string DbPath { get; }
 
-        public WeatherDbContext(DbContextOptions<WeatherDbContext> options, IOptions<DatabaseConfigurationClass> options2) : base (options)
+        public WeatherDbContext(DbContextOptions options) : base(options)
         {
-            string folder = options2.Value.ConnectionPath;
-            DbPath = Path.Join(folder, options2.Value.DefaultConnection);
-            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             if (!options.IsConfigured)
             {
-                //options.UseSqlite($"Data Source = {DbPath}");
-                options.UseMySQL("server=localhost;database=library;user=user;password=password");
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json")
+               .Build();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                options.UseSqlServer(connectionString);
             }
+
         }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
