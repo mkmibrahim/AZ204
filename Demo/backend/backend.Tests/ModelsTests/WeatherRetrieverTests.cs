@@ -1,14 +1,10 @@
 ﻿using backend.Models;
 using backend.Tests.Helpers;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Moq.Protected;
-using RichardSzalay.MockHttp;
 using System;
-using System.Collections.Generic;
-using System.Net;
+using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -43,15 +39,12 @@ namespace backend.Tests.ModelsTests
                 .ReturnsAsync(new HttpResponseMessage()
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
-                    Content = new StringContent("{\"temperature\":18.27,\"humidity\":80}"),
+                    Content = new StringContent("{\"Time\":\"2022-10-01T22:00:55.000000+00:00\",\"Temperature\":18.27,\"Humidity\":80,\"History\":[{\"Time\":\"2022-10-11T09:06:55.8744061+00:00\",\"Temperature\":27.42,\"Humidity\":47,\"History\":null}]}"),
                 })
                 .Verifiable();
 
             // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("https://localhost:5021"),
-            };
+            var httpClient = new HttpClient(handlerMock.Object);
 
             var retriever = new WeatherRetriever(optionsHelper.CreateOptions(), httpClient);
 
@@ -59,9 +52,13 @@ namespace backend.Tests.ModelsTests
             var weatherObject = await retriever.GetWeather(cityName);
 
             // Act
-            Assert.NotNull(weatherObject); // this is fluent assertions here...
+            Assert.NotNull(weatherObject); 
             Assert.Equal((decimal)18.27, weatherObject.Temperature);
             Assert.Equal(80, weatherObject.Humidity);
+            Assert.NotNull(weatherObject.History);
+            var firstHistoryInstance = weatherObject.History.FirstOrDefault();
+            Assert.Equal((decimal)27.42, firstHistoryInstance.Temperature);
+            Assert.Equal(47, firstHistoryInstance.Humidity);
              
             // also check the 'http' call was like we expected it
             var expectedUri = new Uri("https://localhost:5021/api/Weather/Get?cityName=Amsterdam");

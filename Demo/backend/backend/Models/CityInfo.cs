@@ -9,10 +9,16 @@ namespace backend.Models
         public string Slug { get; set; }
         public string Image {get; set; }
         public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public decimal Temperature { get; set; }
-        public int Humidity { get; set;}
+        public WeatherInfo Weather { get; set; }
         public string Summary { get; set; }
         public List<string> Images {get; set; }
+    }
+
+    public class WeatherInfo
+    {
+        public DateTime Time { get; set; }
+        public decimal Temperature { get; set; }
+        public int Humidity { get; set;}
+        public List<WeatherInfo> History { get; set; }
     }
 }

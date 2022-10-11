@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
+//using Newtonsoft.Json;
+//using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace backend.Models
 {
@@ -20,7 +22,6 @@ namespace backend.Models
 
         public async Task<WeatherDTO> GetWeather(string cityName)
         {
-            var result = new WeatherDTO();
             //HttpClient client = new HttpClient();
             string uri = _configClass.CityWeatherUrl 
                 + "?cityName=" + cityName;
@@ -36,9 +37,7 @@ namespace backend.Models
                 Console.WriteLine("Message :{0}", e.Message);
             }
 
-            var details = JObject.Parse(responseBody);
-            result.Temperature = (decimal)(details.SelectToken("temperature")?.ToObject<decimal>());
-            result.Humidity = (int)(details.SelectToken("humidity")?.ToObject<int>());
+            var result = JsonSerializer.Deserialize<WeatherDTO>(responseBody);
 
             return result;
         }

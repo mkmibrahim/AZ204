@@ -1,6 +1,8 @@
 ﻿using CityWeather.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -31,16 +33,16 @@ namespace CityWeather.Controllers
                 var responseMessageHistory = new WeatherInfoResponseMessage()
                 {
                     Time = historic.Time,
-                    temperature = historic.Temperature,
-                    humidity = historic.Humidity
+                    Temperature = historic.Temperature,
+                    Humidity = historic.Humidity
                 };
                 history.Add(responseMessageHistory);
             }
             var result = new WeatherInfoResponseMessage()
             {
                 Time = response.Time,
-                temperature = response.Temperature,
-                humidity = response.Humidity,
+                Temperature = response.Temperature,
+                Humidity = response.Humidity,
                 History = history
             };
             return Ok(result);
@@ -49,9 +51,10 @@ namespace CityWeather.Controllers
 
     public class WeatherInfoResponseMessage
     {
+        [JsonProperty(PropertyName = "Time")]
         public DateTime Time { get; set; }
-        public decimal temperature { get; set; }
-        public int humidity { get; set; }
+        public decimal Temperature { get; set; }
+        public int Humidity { get; set; }
         public List <WeatherInfoResponseMessage> History { get; set; }
     }
 }

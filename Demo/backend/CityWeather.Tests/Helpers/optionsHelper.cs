@@ -25,12 +25,10 @@ namespace CityWeather.Tests.Helpers
             return options;
         }
 
-        public static DbContextOptions<WeatherDbContext> CreateOptionsDb()
+        public static DbContextOptions<WeatherDbContext> CreateNewContextOptions(string dbName)
         {
-            DbContextOptions<WeatherDbContext> dbContextOptions;
-
             var options = new DbContextOptionsBuilder<WeatherDbContext>()
-                            .UseInMemoryDatabase(databaseName: "MemoryWeatherDb")
+                            .UseInMemoryDatabase(databaseName: dbName)
                             .Options;
             return options;
         }
