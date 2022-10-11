@@ -14,7 +14,6 @@ namespace CityWeather.Tests.ModelsTests
     public class WeatherHistoryManagerTests :IDisposable
     {
         private readonly DbContextOptions<WeatherDbContext> _options;
-        private readonly IOptions<DatabaseConfigurationClass> _optionsdb;
         private WeatherDbContext _context;
 
         #region Helpers
@@ -36,12 +35,7 @@ namespace CityWeather.Tests.ModelsTests
         #endregion
         public WeatherHistoryManagerTests()
         {
-            //_options = optionsHelper.CreateOptionsDb();
-
-            // _optionsdb = optionsHelper.CreateOptionsDb();
-
-            //using (_context = new WeatherDbContext(_options))
-            //    _context.Database.EnsureCreated();
+            _options = optionsHelper.CreateOptionsDb();
         }
 
         public void Dispose()

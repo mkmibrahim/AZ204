@@ -1,5 +1,6 @@
 ﻿using CityWeather.Data;
 using CityWeather.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
@@ -24,16 +25,13 @@ namespace CityWeather.Tests.Helpers
             return options;
         }
 
-        public static IOptions<DatabaseConfigurationClass> CreateOptionsDb()
+        public static DbContextOptions<WeatherDbContext> CreateOptionsDb()
         {
-            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            DatabaseConfigurationClass configurationClass = new DatabaseConfigurationClass()
-            {
-                ConnectionPath = Directory.GetCurrentDirectory(),
-                DefaultConnection = configuration.GetSection("ConnectionStrings").GetValue<string>("DefaultConnection")
-            };
-            var options = Options.Create(configurationClass);
-            
+            DbContextOptions<WeatherDbContext> dbContextOptions;
+
+            var options = new DbContextOptionsBuilder<WeatherDbContext>()
+                            .UseInMemoryDatabase(databaseName: "MemoryWeatherDb")
+                            .Options;
             return options;
         }
     }
