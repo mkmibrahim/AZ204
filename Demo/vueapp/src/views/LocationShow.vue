@@ -5,7 +5,7 @@
       <img :src="location.image" :alt="location.name" />
       <p>Temperature: {{ location.weather.temperature }}</p>
       <p>Humidity: {{ location.weather.humidity }}</p>
-      <table class="center">
+      <table border="1">
         <thead>
           <tr>
             <th>Time</th>
@@ -24,6 +24,7 @@
           </tr>
         </tbody>
       </table>
+      <p>test test</p>
     </div>
     <GoBack />
   </section>
@@ -61,3 +62,12 @@ export default {
   },
 };
 </script>
+
+<style>
+table {
+  border-collapse: collapse;
+  margin: auto;
+  padding: 0;
+  width: calc(100% - 200px);
+}
+</style>
