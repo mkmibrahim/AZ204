@@ -17,6 +17,11 @@
             "slug": "cairo",
             "image": "cairo.jpg",
             "id": 3
+        },
+        {
+            "name": "Brussels",
+            "slug": "brussels",
+            "id": 4
         }
     ]
 }

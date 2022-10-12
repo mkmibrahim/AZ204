@@ -43,7 +43,12 @@ namespace backend.Tests.ModelsTests
             var weatherResult = new WeatherDTO
             {
                 Temperature = 15,
-                Humidity = 30
+                Humidity = 30,
+                History = new List<WeatherDTO>
+                {
+                    new WeatherDTO{Temperature = 20, Humidity = 50, Time = new DateTime(2022, 11, 10, 22, 10, 15)},
+                    new WeatherDTO{Temperature = 25, Humidity = 55, Time = new DateTime(2022, 11, 11, 21, 15, 15)},
+                }
             };
             weatherRetrieverMock.Setup(w => w.GetWeather(It.IsAny<string>()))
                 .Returns(Task.FromResult(weatherResult));
@@ -63,8 +68,8 @@ namespace backend.Tests.ModelsTests
             Assert.Equal(2,result.Images.Count);
             Assert.Equal("string1",result.Images[0]);
             Assert.Equal("string2",result.Images[1]);
-            Assert.Equal(15, result.Temperature);
-            Assert.Equal(30, result.Humidity);
+            Assert.Equal(15, result.Weather.Temperature);
+            Assert.Equal(30, result.Weather.Humidity);
         }
     }
 }

@@ -6,15 +6,18 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Xunit;
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace CityWeather.Tests.ModelsTests
 {
+    
     public class WeatherHistoryManagerTests :IDisposable
     {
-        private readonly DbContextOptions<WeatherDbContext> _options;
-        private WeatherDbContext _context;
+        //private readonly DbContextOptions<WeatherDbContext> _options;
+        //private WeatherDbContext _context;
 
         #region Helpers
         static void AssertWeatherRecordsEqual(WeatherInfoObject WeatherInfoObject, WeatherInfoObject retrievedRecord)
@@ -35,7 +38,7 @@ namespace CityWeather.Tests.ModelsTests
         #endregion
         public WeatherHistoryManagerTests()
         {
-            _options = optionsHelper.CreateOptionsDb();
+            //_options = optionsHelper.CreateNewContextOptions();
         }
 
         public void Dispose()
@@ -48,13 +51,14 @@ namespace CityWeather.Tests.ModelsTests
         public void CreateWeatherHistoryManager()
         {
             // Arrange
-            
+            using (var _context = new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name)))
+            {
+                // Act 
+                IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
 
-            // Act 
-            IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
-
-            // Assert
-            Assert.NotNull(manager);
+                // Assert
+                Assert.NotNull(manager);
+            }
         }
 
         #region AddWeatherInfo
@@ -63,7 +67,7 @@ namespace CityWeather.Tests.ModelsTests
         {
             // Arrange
             
-            using (_context = new WeatherDbContext(_options))
+            using (var _context = new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name)))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
               
@@ -73,7 +77,7 @@ namespace CityWeather.Tests.ModelsTests
 
             // Assert
             Assert.True(newRecordId > 0);
-            using (_context = new WeatherDbContext(_options))
+            using (var _context = new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name)))
             {
                 var managerToCheck = new WeatherHistoryManager(_context);
                 var retrievedRecord = managerToCheck.GetWeatherInfo(newRecordId);
@@ -87,7 +91,7 @@ namespace CityWeather.Tests.ModelsTests
             // Arrange
             WeatherInfoObject.cityName = "NewCity";
             
-            using (_context = new WeatherDbContext(_options))
+            using (var _context = new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name)))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
 
@@ -97,7 +101,7 @@ namespace CityWeather.Tests.ModelsTests
 
             // Assert
             Assert.True(newRecordId > 0);
-            using (_context = new WeatherDbContext(_options))
+            using (var _context = new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name)))
             {
                 var managerToCheck = new WeatherHistoryManager(_context);
                 var retrievedRecord = managerToCheck.GetWeatherInfo(newRecordId);
@@ -110,7 +114,7 @@ namespace CityWeather.Tests.ModelsTests
         public void AddWeatherInfo_UpdateExistingRecord()
         {
             // Arrange
-            using (_context = new WeatherDbContext(_options))
+            using (var _context = new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name)))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
                 WeatherInfoObject previousWeatherInfoObject = new WeatherInfoObject
@@ -128,7 +132,7 @@ namespace CityWeather.Tests.ModelsTests
 
             // Assert
             Assert.True(newRecordId > 0);
-            using (_context = new WeatherDbContext(_options))
+            using (var _context = new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name)))
             {
                 var managerToCheck = new WeatherHistoryManager(_context);
                 var retrievedRecord = managerToCheck.GetWeatherInfo(newRecordId);
@@ -141,9 +145,12 @@ namespace CityWeather.Tests.ModelsTests
         [Fact]
         public void GetWeatherInfoUsingCityName()
         {
+            
             // Arrange
-            using (_context = new WeatherDbContext(_options))
+            using (var _context = new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name)))
             {
+                _context.Database.EnsureDeleted();
+                _context.Database.EnsureCreated();
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
                 newRecordId = manager.AddWeatherInfo(WeatherInfoObject);
                 for (int i = 0; i < 9; i++)
@@ -154,7 +161,7 @@ namespace CityWeather.Tests.ModelsTests
             }
 
             // Act
-            using (_context = new WeatherDbContext(_options))
+            using (var _context = new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name)))
             {
                 IWeatherHistoryManager manager = new WeatherHistoryManager(_context);
                 var retrievedRecords = manager.GetWeatherInfo(WeatherInfoObject.cityName);

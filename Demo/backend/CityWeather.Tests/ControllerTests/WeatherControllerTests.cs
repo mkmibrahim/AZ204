@@ -73,13 +73,13 @@ namespace CityWeather.Tests.ControllerTests
             var weatherInfo = response as OkObjectResult;
             var weatherInfoResponse = weatherInfo.Value as WeatherInfoResponseMessage;
             Assert.NotNull(weatherInfoResponse);
-            Assert.IsType<decimal>(weatherInfoResponse.temperature);
-            Assert.IsType<int>(weatherInfoResponse.humidity);
-            Assert.Equal(21.0M, weatherInfoResponse.temperature);
-            Assert.Equal(40, weatherInfoResponse.humidity);
+            Assert.IsType<decimal>(weatherInfoResponse.Temperature);
+            Assert.IsType<int>(weatherInfoResponse.Humidity);
+            Assert.Equal(21.0M, weatherInfoResponse.Temperature);
+            Assert.Equal(40, weatherInfoResponse.Humidity);
             Assert.Single(weatherInfoResponse.History);
-            Assert.Equal(21.0M, weatherInfoResponse.History.First().temperature);
-            Assert.Equal(40, weatherInfoResponse.History.First().humidity);
+            Assert.Equal(21.0M, weatherInfoResponse.History.First().Temperature);
+            Assert.Equal(40, weatherInfoResponse.History.First().Humidity);
 
         }
     }
