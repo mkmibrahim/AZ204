@@ -24,13 +24,12 @@
           </tr>
         </tbody>
       </table>
-      <p>test test</p>
     </div>
     <GoBack />
   </section>
 </template>
 <script>
-import api from "@/services/TemperatureService.js";
+import api from "@/services/BackendService.js";
 import GoBack from "@/components/GoBack.vue";
 export default {
   components: { GoBack },
@@ -53,9 +52,7 @@ export default {
   },
   methods: {
     async initData() {
-      const response = await api.getTemperatureFunction(
-        this.$route.params.slug
-      );
+      const response = await api.getWeatherFunction(this.$route.params.slug);
       console.log("Response is %o", response);
       this.location = response.data;
     },
