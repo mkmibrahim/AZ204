@@ -7,22 +7,32 @@
         :key="location.id"
         :to="{
           name: 'location.show',
-          params: { id: location.id, slug: location.slug },
+          params: { id: location.id, slug: location.name },
         }"
       >
         <h2>{{ location.name }}</h2>
-        <img :src="'/images/' + location.image" :alt="location.name" />
+        <img :src="location.image" :alt="location.name" />
       </router-link>
     </div>
   </div>
 </template>
 <script>
-import soureData from "@/data.json";
+import api from "@/services/BackendService.js";
 export default {
   data() {
     return {
-      locations: soureData.locations,
+      locations: null,
     };
+  },
+  async created() {
+    this.initData();
+  },
+  methods: {
+    async initData() {
+      const response = await api.getCitiesFunction();
+      console.log("Response is %o", response);
+      this.locations = response.data;
+    },
   },
 };
 </script>

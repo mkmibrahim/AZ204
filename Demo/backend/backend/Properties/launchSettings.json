@@ -21,7 +21,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       //"launchUrl": "weatherforecast",
-      "launchUrl": "api/city/get/amsterdam",
+      "launchUrl": "api/City/Get?cityName=amsterdam",
       //"launchUrl": "Weather2",
       "applicationUrl": "https://localhost:5011;http://localhost:5010",
       "environmentVariables": {

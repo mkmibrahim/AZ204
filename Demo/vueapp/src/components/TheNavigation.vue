@@ -6,7 +6,7 @@
       :key="location.id"
       :to="{
         name: 'location.show',
-        params: { id: location.id, slug: location.slug },
+        params: { id: location.id, slug: location.name },
       }"
     >
       {{ location.name }} |
@@ -15,12 +15,22 @@
 </template>
 
 <script>
-import sourceData from "@/data.json";
+import api from "@/services/BackendService.js";
 export default {
   data() {
     return {
-      locations: sourceData.locations,
+      locations: null,
     };
+  },
+  async created() {
+    this.initData();
+  },
+  methods: {
+    async initData() {
+      const response = await api.getCitiesFunction();
+      console.log("Response is %o", response);
+      this.locations = response.data;
+    },
   },
 };
 </script>
