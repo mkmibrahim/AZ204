@@ -28,13 +28,6 @@ namespace backend.Models
             _weatherRetriever = weatherRetriever;
         }
 
-        //public CityInfoComposer(IOptions<ConfigurationClass> options)
-        //{
-        //    _configClass = options.Value;
-        //    //_imageRetriever = imageRetriever;
-        //    //_weatherRetriever = weatherRetriever;
-        //}
-
         public async Task<CityInfo> GetInfo(string cityName)
         {
             var rng = new Random();
@@ -49,12 +42,6 @@ namespace backend.Models
             var mapper = config.CreateMapper();
             var weatherInfo = mapper.Map<WeatherInfo>(retrievedWeatherInfo);
 
-            //var weatherInfo = new WeatherInfo
-            //{
-            //    Temperature = retrievedWeatherInfo.Temperature,
-            //    Humidity = retrievedWeatherInfo.Humidity,
-            //    History = retrievedWeatherInfo.History
-            //};
             var result = new CityInfo
             {
                 Name = cityName,
