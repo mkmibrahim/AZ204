@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using static System.Net.WebRequestMethods;
 
 namespace backend.Tests.ModelsTests
 {
@@ -51,10 +52,7 @@ namespace backend.Tests.ModelsTests
                 .Verifiable();
 
             // use real http client with mocked handler here
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri (optionsHelper.CreateOptions().Value.CityImagesUrl)
-            };
+            var httpClient = new HttpClient(handlerMock.Object);
 
             var retriever = new ImageRetriever(optionsHelper.CreateOptions(), httpClient);
 
@@ -66,6 +64,18 @@ namespace backend.Tests.ModelsTests
             Assert.Equal(quantity, images.Count);
             for(int i = 0; i < images.Count; i++)
                 Assert.False(String.IsNullOrEmpty(images[i]));
+            // also check the 'http' call was like we expected it
+            var expectedUri = new Uri("https://localhost:5001/api/Images/get?cityName=Amsterdam&quantity=2");
+
+            handlerMock.Protected().Verify(
+               "SendAsync",
+               Times.Exactly(1), // we expected a single external request
+               ItExpr.Is<HttpRequestMessage>(req =>
+                  req.Method == HttpMethod.Get  // we expected a GET request
+                  && req.RequestUri == expectedUri // to this uri
+               ),
+               ItExpr.IsAny<CancellationToken>()
+            );
         }
 
     }

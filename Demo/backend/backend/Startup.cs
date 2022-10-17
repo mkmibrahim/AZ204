@@ -49,8 +49,9 @@ namespace backend
             services.AddScoped<IImageRetriever,  ImageRetriever>();
             services.AddScoped<IWeatherRetriever, WeatherRetriever>();
             services.AddScoped<ICityInfoComposer, CityInfoComposer>();
+            services.AddScoped<IAvailableCitiesComposer, AvailableCitiesComposer>();
             services.Configure<ConfigurationClass>
-                (this.Configuration.GetSection("ConfigurationUrls"));
+                (this.Configuration.GetSection("ConfigurationSection"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

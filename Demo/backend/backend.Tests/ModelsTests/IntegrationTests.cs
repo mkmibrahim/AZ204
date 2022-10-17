@@ -19,8 +19,9 @@ namespace backend.Tests.ModelsTests
 
         
         [Trait("Category","Integration")]
-        [Theory (Skip ="Integration")]
-        [InlineData("api/City/Get/Paris")]
+        [Theory]
+        [InlineData("/api/City/Get?cityName=amsterdam")]
+        [InlineData("/api/City/GetCities")]
         public async Task Get_EndpointReturnsSuccess(string url)
         {
             // Arrange
