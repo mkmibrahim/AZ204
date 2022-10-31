@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityImages.Tests", "backend
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityWeather", "backend\CityWeather\CityWeather.csproj", "{DE27B1F6-E996-4AD8-BF19-1616DC511DDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityWeather.Tests", "backend\CityWeather.Tests\CityWeather.Tests.csproj", "{708EDB9D-F1B5-43B9-ABF1-238977BEA849}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityWeather.Tests", "backend\CityWeather.Tests\CityWeather.Tests.csproj", "{708EDB9D-F1B5-43B9-ABF1-238977BEA849}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend-Cities", "Frontend-Cities\Frontend-Cities.csproj", "{F5934C7B-8F6D-44AF-BCE4-0D7B8A13755C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{708EDB9D-F1B5-43B9-ABF1-238977BEA849}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{708EDB9D-F1B5-43B9-ABF1-238977BEA849}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{708EDB9D-F1B5-43B9-ABF1-238977BEA849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5934C7B-8F6D-44AF-BCE4-0D7B8A13755C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5934C7B-8F6D-44AF-BCE4-0D7B8A13755C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5934C7B-8F6D-44AF-BCE4-0D7B8A13755C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5934C7B-8F6D-44AF-BCE4-0D7B8A13755C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
