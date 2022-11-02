@@ -10,12 +10,15 @@
     <h4>Welcome to the cities information app</h4>
 </div>
 
-<table class=" =table">
+<table style="width:100%">
     <thead>
         <tr>
+            @{
+                var columnwidth = 100 / Model.Count;
+            }
             @foreach (var item in Model)
             {
-                <td >
+                <td style="width: @columnwidth%">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
             }
@@ -26,7 +29,7 @@
             @foreach (var item in Model)
             {
                 <td>
-                    <img src="@Url.Content(item.Image)" alt="IMAGES" style="width: 150px; height: 150px"/>
+                    <img src="@Url.Content(item.Image)" alt="IMAGES" style="width:80%; height:auto; " />
                 </td>
             }
         </tr>

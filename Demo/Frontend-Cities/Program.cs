@@ -5,7 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+HttpClient httpClient = new HttpClient();
+builder.Services.AddSingleton<HttpClient>(httpClient);
 builder.Services.AddScoped<CityModel, CityModel>();
+builder.Services.Configure<ConfigurationClass>
+                (builder.Configuration.GetSection("UrlConfiguration"));
 
 var app = builder.Build();
 
