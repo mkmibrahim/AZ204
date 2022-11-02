@@ -1,7 +1,11 @@
+using Frontend_Cities.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<CityModel, CityModel>();
 
 var app = builder.Build();
 
