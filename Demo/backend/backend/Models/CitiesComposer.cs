@@ -12,7 +12,9 @@ namespace backend.Models
         private readonly ConfigurationClass _configClass;
         private List<City> _availableCities = new List<City>();
 
-        public AvailableCitiesComposer(IOptions<ConfigurationClass> options,                                        IImageRetriever imageRetriever)        {
+        public AvailableCitiesComposer(IOptions<ConfigurationClass> options,
+                                        IImageRetriever imageRetriever)
+        {
             _configClass = options.Value;
             _imageRetriever = imageRetriever;
             determineAvailableCities();
