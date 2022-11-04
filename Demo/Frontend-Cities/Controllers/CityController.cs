@@ -12,12 +12,17 @@ namespace Frontend_Cities.Controllers
             _cityModel = cityModel;
         }
 
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    List<CityData> cities = await _cityModel.getCitiesAsync();
+        //    return View(cities);
+        //}
+        public async Task<IActionResult> Index()
         {
-            List<CityData> cities = _cityModel.getCities();
+            List<CityData> cities = await _cityModel.getCitiesAsync();
             return View(cities);
         }
 
-        
+
     }
 }

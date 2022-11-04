@@ -1,4 +1,5 @@
 using Frontend_Cities.Models;
+using Frontend_Cities.Tests.Helpers;
 using System.Net.Http.Headers;
 
 namespace Frontend_Cities.Tests
@@ -12,20 +13,20 @@ namespace Frontend_Cities.Tests
         }
 
         [Fact]
-        public void GetCitiesTest()
+        public async Task GetCitiesTestAsync()
         {
             // Arrange
-            var cityModel = new CityModel();
+            var cityModel = new CityModel(optionsHelper.CreateOptions(), new HttpClient());
 
             // Act
-            var result = cityModel.getCities();
+            var result = await cityModel.getCitiesAsync();
 
             // Assert
             Assert.NotNull(result);
             Assert.True(result.Count() > 0, "No cities are returned");
             foreach(var city in result)
             {
-                Assert.True(city.Id > 0);
+                Assert.True(city.Id > -1);
                 Assert.NotEmpty(city.Name);
                 Assert.NotEmpty(city.Image);
             }
