@@ -87,8 +87,8 @@ namespace CityWeather
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<WeatherDbContext>();
                 //Execute following command in VS Package Manager Console: Add-Migration InitialCreate -Context WeatherDbContext
-                //context.Database.Migrate();
-                context.Database.EnsureCreated();
+                context.Database.Migrate();
+                //context.Database.EnsureCreated();
             }
         }
     }

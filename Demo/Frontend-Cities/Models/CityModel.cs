@@ -74,8 +74,5 @@ namespace Frontend_Cities.Models
         public string Image { get; set; }
     }
 
-    public class CityDataList
-    {
-        public List<CityData> cityData;
-    }
+    
 }
