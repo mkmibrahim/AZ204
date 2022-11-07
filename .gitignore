@@ -562,3 +562,4 @@ FodyWeavers.xsd
 appsettings.local.json
 Demo/backend/CityImages/appsettings.json
 Demo/backend/CityWeather/appsettings.json
+Demo/backend/CityWeather/appsettings.Production.json
