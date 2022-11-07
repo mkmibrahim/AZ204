@@ -30,8 +30,8 @@ namespace Frontend_Cities.Models
         private async Task<List<CityData>> getCitiesFromBackend()
         {
             List<CityData> cities = new List<CityData>();
-            string uri = "https://az204demobackendapp123.azurewebsites.net/api/City/GetCities";
-            //string uri = _configClass.CityImagesUrl + "?" + "cityName=" + cityName + "&quantity=" + quantity;
+            //string uri = "https://az204demobackendapp123.azurewebsites.net/api/City/GetCities";
+            string uri = _configClass.backendUrl + "GetCities";
             string responseBody = "";
 
             try
