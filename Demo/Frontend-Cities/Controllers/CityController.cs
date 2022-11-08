@@ -17,10 +17,20 @@ namespace Frontend_Cities.Controllers
         //    List<CityData> cities = await _cityModel.getCitiesAsync();
         //    return View(cities);
         //}
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name)
         {
-            List<CityData> cities = await _cityModel.getCitiesAsync();
-            return View(cities);
+            if(name is null)
+            {
+                List<CityData> cities = await _cityModel.getCitiesAsync();
+                return View(cities);
+            }
+            else
+            {
+                List<CityData> cities = await _cityModel.getCitiesAsync();
+                return View(cities);
+            }
+
+            
         }
 
 
