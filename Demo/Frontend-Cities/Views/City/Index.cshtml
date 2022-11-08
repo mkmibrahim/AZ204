@@ -29,7 +29,9 @@
             @foreach (var item in Model)
             {
                 <td>
-                    <img src="@Url.Content(item.Image)" alt="IMAGES" style="width:80%; height:auto; " />
+                    <a href="@Url.Action("Index", new { name=item.Name })">
+                        <img src="@Url.Content(item.Image)" , alt="item.Name" style="width:80%; height:auto;" />
+                    </a>
                 </td>
             }
         </tr>
