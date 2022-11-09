@@ -24,7 +24,11 @@ namespace CityWeather.Data
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
-               .AddJsonFile("appsettings.Development.json")
+                #if DEBUG
+                    .AddJsonFile("appsettings.Development.json")
+                #else
+                    .AddJsonFile("appsettings.Production.json")
+                #endif
                .Build();
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);

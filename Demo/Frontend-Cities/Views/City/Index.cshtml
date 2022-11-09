@@ -8,32 +8,57 @@
 
 <div class="text-center">
     <h4>Welcome to the cities information app</h4>
+    @{
+        string cityName = ViewData["name"] != null ? ViewData["name"].ToString() : "";  
+    }
+    <h4>Selected city is @cityName</h4>
 </div>
 
+@if (String.IsNullOrEmpty(cityName))
+{
+    <table style="width:100%">
+        <thead>
+            <tr>
+                @{
+                    var columnwidth = 100 / Model.Count;
+                }
+                @foreach (var item in Model)
+                {
+                    <td style="width: @columnwidth%">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @foreach (var item in Model)
+                {
+                    <td>
+                        <a href="@Url.Action("Index", new { name=item.Name })">
+                            <img src="@Url.Content(item.Image)" , alt="item.Name" style="width:80%; height:auto;" />
+                        </a>
+                    </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
 <table style="width:100%">
     <thead>
         <tr>
-            @{
-                var columnwidth = 100 / Model.Count;
-            }
-            @foreach (var item in Model)
-            {
-                <td style="width: @columnwidth%">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-            }
+            <td>
+                Time
+            </td>
+            <td>
+                Temperature
+            </td>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            @foreach (var item in Model)
-            {
-                <td>
-                    <a href="@Url.Action("Index", new { name=item.Name })">
-                        <img src="@Url.Content(item.Image)" , alt="item.Name" style="width:80%; height:auto;" />
-                    </a>
-                </td>
-            }
-        </tr>
+       
     </tbody>
 </table>
+}

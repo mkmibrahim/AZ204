@@ -31,5 +31,20 @@ namespace Frontend_Cities.Tests
                 Assert.NotEmpty(city.Image);
             }
         }
+
+        [Fact]
+        public async Task GetCityInfo()
+        {
+            // Arrange
+            var cityModel = new CityModel(optionsHelper.CreateOptions(), new HttpClient());
+
+            // Act
+            var result = await cityModel.getCityInfo("Amsterdam");
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(1, result.Count);
+
+        }
     }
 }
