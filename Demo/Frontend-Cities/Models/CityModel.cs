@@ -21,16 +21,21 @@ namespace Frontend_Cities.Models
 
         internal async Task<List<CityData>> getCitiesAsync()
         {
-            var result = new List<CityData>();
-
-            result = await getCitiesFromBackend();
+            var result = await getCitiesFromBackend("GetCities");
             return result;
         }
 
-        private async Task<List<CityData>> getCitiesFromBackend()
+        internal async Task<List<CityData>> getCityInfo(string name)
+        {
+            var postfix = "Get?cityName=" + name;
+            var result = await getCitiesFromBackend(postfix);
+            return result;
+        }
+
+        internal async Task<List<CityData>> getCitiesFromBackend(string postfix)
         {
             List<CityData> cities = new List<CityData>();
-            string uri = _configClass.backendUrl + "GetCities";
+            string uri = _configClass.backendUrl + postfix;
             string responseBody = "";
 
             try
@@ -58,10 +63,9 @@ namespace Frontend_Cities.Models
                 };
                 cities.Add(city);
             }
-
-            
             return cities;
         }
+
     }
 
     
@@ -71,7 +75,15 @@ namespace Frontend_Cities.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
+        public WeatherInfo Weather { get; set; }
     }
 
+    public class WeatherInfo
+    {
+        public DateTime Time { get; set; }
+        public decimal Temperature { get; set; }
+        public int Humidity { get; set;}
+        public List<WeatherInfo> History { get; set; }
+    }
     
 }

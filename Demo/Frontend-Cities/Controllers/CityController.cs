@@ -12,11 +12,6 @@ namespace Frontend_Cities.Controllers
             _cityModel = cityModel;
         }
 
-        //public IActionResult Index()
-        //{
-        //    List<CityData> cities = await _cityModel.getCitiesAsync();
-        //    return View(cities);
-        //}
         public async Task<IActionResult> Index(string? name)
         {
             if(name is null)
@@ -27,6 +22,7 @@ namespace Frontend_Cities.Controllers
             else
             {
                 List<CityData> cities = await _cityModel.getCitiesAsync();
+                ViewData["name"]= name;
                 return View(cities);
             }
 

@@ -14,7 +14,7 @@
       "launchUrl": "api/Weather/Get?cityName=Amsterdam",
       "applicationUrl": "https://localhost:5021;http://localhost:5020",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "production"
       }
     },
     "Docker": {

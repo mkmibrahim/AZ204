@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace Frontend_Cities.Tests.Helpers
 {
@@ -17,7 +18,7 @@ namespace Frontend_Cities.Tests.Helpers
             ConfigurationClass configurationClass = new ConfigurationClass()
             {
                 //backendUrl = configuration.GetSection("ConfigurationSection").GetValue<string>("BackendUrl"),
-                backendUrl = "https://az204demobackendapp123.azurewebsites.net/api/City/GetCities"
+                backendUrl = "https://az204demobackendapp123.azurewebsites.net/api/City/"
             };
             var options = Options.Create(configurationClass);
 
