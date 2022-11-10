@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 using static System.Net.WebRequestMethods;
 
 [assembly:InternalsVisibleTo("Frontend-Cities.Tests")]
@@ -21,37 +23,10 @@ namespace Frontend_Cities.Models
 
         internal async Task<List<CityData>> getCitiesAsync()
         {
-            var result = await getCitiesFromBackend("GetCities");
-            return result;
-        }
+            var result = await getInfoFromBackend("GetCities");
 
-        internal async Task<List<CityData>> getCityInfo(string name)
-        {
-            var postfix = "Get?cityName=" + name;
-            var result = await getCitiesFromBackend(postfix);
-            return result;
-        }
-
-        internal async Task<List<CityData>> getCitiesFromBackend(string postfix)
-        {
+            JArray jsonArray = JArray.Parse(result);
             List<CityData> cities = new List<CityData>();
-            string uri = _configClass.backendUrl + postfix;
-            string responseBody = "";
-
-            try
-            {
-                responseBody = await _httpClient.GetStringAsync(uri);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-
-            JArray jsonArray = JArray.Parse(responseBody);
-            var details = JObject.Parse(jsonArray[0].ToString());
-            
-
             foreach(JObject item in jsonArray)
             {
                 
@@ -65,6 +40,98 @@ namespace Frontend_Cities.Models
             }
             return cities;
         }
+
+        internal async Task<List<CityData>> getCityInfo(string cityName)
+        {
+            var postfix = "Get?cityName=" + cityName;
+            var result = await getInfoFromBackend(postfix);
+
+            var cityinfodata = JObject.Parse(result);
+
+            List<CityData> cities = new List<CityData>();
+
+            var city = new CityData
+            {
+                Id = (int)cityinfodata.GetValue("id"),
+                Name = cityinfodata.GetValue("name").ToString(),
+                Image = cityinfodata.GetValue("image").ToString(),
+            };
+            
+            
+            try
+            {
+                var weatherToken = cityinfodata.SelectToken("$.weather");
+                WeatherInfo weatherInfo = getWeatherInfoFromToken(weatherToken);
+                try
+                {
+                    var historyToken = weatherToken.SelectToken("$.history");
+                    var childrenHistoryTokesn = historyToken.Children();
+                    foreach(var child in childrenHistoryTokesn)
+                    {
+                        WeatherInfo weatherInfoHistory = getWeatherInfoFromToken(weatherToken);
+                        weatherInfo.History.Add(weatherInfoHistory);
+                    }
+
+                }
+                catch
+                {
+
+                }
+                city.Weather = weatherInfo;
+            }
+            catch (Exception ex){
+            }
+            cities.Add(city);
+
+            return cities;
+        }
+
+        private WeatherInfo getWeatherInfoFromToken(JToken weatherToken)
+        {
+            WeatherInfo weatherInfo = new WeatherInfo();
+            var jsonSettings = new JsonSerializerSettings();
+            jsonSettings.DateFormatString = "yyyy-MM-ddThh:mm:ss:fffz";// "2022-11-09T10:55:26.8363651+00:00"
+            weatherInfo.Time = (DateTime)weatherToken.SelectToken("time");
+            weatherInfo.Temperature = (decimal)weatherToken.SelectToken("temperature");
+            weatherInfo.Humidity = (int)weatherToken.SelectToken("humidity");
+            return weatherInfo;
+        }
+
+
+
+        internal async Task<string> getInfoFromBackend(string postfix)
+        {
+            
+            string uri = _configClass.backendUrl + postfix;
+            string responseBody = "";
+
+            try
+            {
+                responseBody = await _httpClient.GetStringAsync(uri);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            return responseBody;
+            //JArray jsonArray = JArray.Parse(responseBody);
+            
+            //foreach(JObject item in jsonArray)
+            //{
+                
+            //    var city = new CityData
+            //    {
+            //        Id = (int)item.GetValue("id"),
+            //        Name = item.GetValue("name").ToString(),
+            //        Image = item.GetValue("image").ToString(),
+            //    };
+            //    cities.Add(city);
+            //}
+            //return cities;
+        }
+
+
 
     }
 
