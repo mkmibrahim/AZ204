@@ -17,8 +17,8 @@ namespace Frontend_Cities.Tests.Helpers
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             ConfigurationClass configurationClass = new ConfigurationClass()
             {
-                //backendUrl = configuration.GetSection("ConfigurationSection").GetValue<string>("BackendUrl"),
-                backendUrl = "https://az204demobackendapp123.azurewebsites.net/api/City/"
+                //backendUrl = "https://az204demobackendapp123.azurewebsites.net/api/City/"
+                backendUrl = "https://localhost:5011/api/City/"
             };
             var options = Options.Create(configurationClass);
 
