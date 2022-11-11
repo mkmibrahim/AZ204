@@ -21,7 +21,7 @@ namespace Frontend_Cities.Controllers
             }
             else
             {
-                List<CityData> cities = await _cityModel.getCitiesAsync();
+                List<CityData> cities = await _cityModel.getCityInfo(name);
                 ViewData["name"]= name;
                 return View(cities);
             }

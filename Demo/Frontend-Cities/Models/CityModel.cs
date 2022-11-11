@@ -65,10 +65,11 @@ namespace Frontend_Cities.Models
                 try
                 {
                     var historyToken = weatherToken.SelectToken("$.history");
-                    var childrenHistoryTokesn = historyToken.Children();
-                    foreach(var child in childrenHistoryTokesn)
+                    var childrenHistoryTokens = historyToken.Children();
+                    weatherInfo.History = new List<WeatherInfo>();
+                    foreach(var child in childrenHistoryTokens)
                     {
-                        WeatherInfo weatherInfoHistory = getWeatherInfoFromToken(weatherToken);
+                        WeatherInfo weatherInfoHistory = getWeatherInfoFromToken(child);
                         weatherInfo.History.Add(weatherInfoHistory);
                     }
 
