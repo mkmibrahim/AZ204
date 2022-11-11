@@ -46,19 +46,51 @@
 }
 else
 {
-<table style="width:100%">
-    <thead>
+    var cityObject = Model.First<CityData>();
+    <table>
         <tr>
-            <td>
-                Time
+            <td style="width:30%">
+                <a href="@Url.Action("Index", new { name= cityObject.Name })">
+                    <img src="@Url.Content(cityObject.Image)" , alt="item.Name" style="width:100%; height:auto;" />
+                </a>
             </td>
-            <td>
-                Temperature
+            <td align="left">
+                Temperature: @cityObject.Weather.Temperature <br>
+                Humidity: @cityObject.Weather.Humidity <br>
+                <table style="width:100%" align="left">
+                    <thead>
+                        <tr>
+                            <td>
+                                Time
+                            </td>
+                            <td>
+                                Temperature
+                            </td>
+                            <td>
+                                Humidity
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var weatherInstance in cityObject.Weather.History)
+                        {
+                            <tr>
+                                <td>
+                                    @weatherInstance.Time
+                                </td>
+                                <td>
+                                    @weatherInstance.Temperature
+                                </td>
+                                <td>
+                                    @weatherInstance.Humidity
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </td>
         </tr>
-    </thead>
-    <tbody>
-       
-    </tbody>
-</table>
+    </table>
+    
+
 }

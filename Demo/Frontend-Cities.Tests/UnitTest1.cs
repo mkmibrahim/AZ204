@@ -44,17 +44,17 @@ namespace Frontend_Cities.Tests
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(1, result.Count);
+            Assert.Single(result);
             Assert.Equal(cityName, result[0].Name);
             Assert.IsType<DateTime>(result[0].Weather.Time);
             Assert.True(result[0].Weather.Temperature > -30);
             Assert.True(result[0].Weather.Humidity > 0);
             Assert.True(result[0].Weather.Humidity < 100);
-            //Assert.True(result[0].Weather.History.Count > 0);
-            //for(int i = 0; i < result[0].Weather.History.Count; i++)
-            //{
-            //    Assert.IsType<DateTime>(result[0].Weather.History[i].Time);
-            //}
+            Assert.True(result[0].Weather.History.Count > 0);
+            for (int i = 0; i < result[0].Weather.History.Count; i++)
+            {
+                Assert.IsType<DateTime>(result[0].Weather.History[i].Time);
+            }
         }
     }
 }
