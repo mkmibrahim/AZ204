@@ -1,9 +1,12 @@
 $location = Get-Location
 
+$scriptToRun = $PSScriptRoot+".\Azure_DeployContainerFrontendCities.ps1"
+& $scriptToRun
+
 cd ..\vueapp\scripts
-Write-Host "Path: " $PSScriptRoot
 $scriptToRun = $PSScriptRoot+"\..\vueapp\scripts\Azure_DeployContainerVueApp.ps1"
 & $scriptToRun
+
 Set-Location $location
 
 cd ..\backend\scripts
