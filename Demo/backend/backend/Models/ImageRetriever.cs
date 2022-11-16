@@ -38,7 +38,7 @@ namespace backend.Models
 
             for (int i = 0; i < quantity; i++)
             {
-                var imageUrlString = details.SelectToken("images")[0]?.ToObject<string>();
+                var imageUrlString = details.SelectToken("images")[i]?.ToObject<string>();
                 images.Add(imageUrlString);
             }
             return images;

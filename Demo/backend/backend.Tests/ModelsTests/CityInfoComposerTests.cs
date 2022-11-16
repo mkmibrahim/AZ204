@@ -71,5 +71,33 @@ namespace backend.Tests.ModelsTests
             Assert.Equal(15, result.Weather.Temperature);
             Assert.Equal(30, result.Weather.Humidity);
         }
+
+        [Fact]
+        public async void GetNewImageTest()
+        {
+            // Arrange
+            var imageRetrieverMock = new Mock<IImageRetriever>();
+            var cityName = "Paris";
+            var images = new List<string>()
+            {
+                "string1",
+                "string2",
+                "string3"
+            };
+            imageRetrieverMock.Setup(i => i.getImageAsync(cityName, It.IsAny<int>()))
+                .Returns(Task.FromResult(images));
+            var composer = new CityInfoComposer(optionsHelper.CreateOptions(),
+                        imageRetrieverMock.Object, new Mock<IWeatherRetriever>().Object);
+
+            // Act
+            var result = await composer.GetNewImage(cityName);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(cityName, result.Name);
+            Assert.Equal(string.Empty, result.Slug);
+            Assert.Contains("string", result.Image);
+            Assert.Equal(string.Empty, result.Summary);
+        }
     }
 }

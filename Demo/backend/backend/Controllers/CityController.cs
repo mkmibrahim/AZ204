@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,8 +38,15 @@ namespace backend.Controllers
         [HttpGet]
         public async Task<List<City>> GetCities()
         {
-            _logger.LogInformation("GetCities request received.");
+            _logger.LogInformation("GetCities request recieved.");
             return await _availableCitiesComposer.GetAvailableCities();
+        }
+        
+        [HttpGet]
+        public async Task<CityInfo> GetNewImage(string cityName)
+        {
+            _logger.LogInformation("GetNewImage reqest recieved for " + cityName);
+            return await _cityInfoComposer.GetNewImage(cityName);
         }
     }
 }

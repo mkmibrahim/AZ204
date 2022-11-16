@@ -10,10 +10,11 @@ using static System.Net.WebRequestMethods;
 
 namespace Frontend_Cities.Models
 {
-    public class CityModel
+    public class CityModel : ICityModel
     {
         private readonly ConfigurationClass _configClass;
         private readonly HttpClient _httpClient;
+        private Dictionary<string, CityData> _cityDataDictionary = new Dictionary<string, CityData>();
 
         public CityModel(IOptions<ConfigurationClass> options, HttpClient httpClient)
         {
@@ -21,7 +22,7 @@ namespace Frontend_Cities.Models
             _httpClient = httpClient;
         }
 
-        internal async Task<List<CityData>> getCitiesAsync()
+        public async Task<List<CityData>> getCitiesAsync()
         {
             var result = await getInfoFromBackend("GetCities");
 
@@ -41,23 +42,40 @@ namespace Frontend_Cities.Models
             return cities;
         }
 
-        internal async Task<List<CityData>> getCityInfo(string cityName)
+        public async Task<List<CityData>> getCityInfo(string cityName)
         {
             var postfix = "Get?cityName=" + cityName;
-            var result = await getInfoFromBackend(postfix);
-
-            var cityinfodata = JObject.Parse(result);
-
             List<CityData> cities = new List<CityData>();
 
+            var valueWithinLastday = getCityDataFromDictionary(cityName);
+            if (valueWithinLastday.Name == cityName)
+            {
+                postfix = "GetNewImage?cityName=" + cityName;
+                var resultNewImage = await getInfoFromBackend(postfix);
+                CityData cityDataNewImage = ExtractCityDataFromResponseBackend(resultNewImage);
+                valueWithinLastday.Image = cityDataNewImage.Image;
+                cities.Add(valueWithinLastday);
+                return cities;
+            }
+
+            var result = await getInfoFromBackend(postfix);
+            CityData city = ExtractCityDataFromResponseBackend(result);
+
+            _cityDataDictionary[cityName] = city;
+            cities.Add(city);
+            return cities;
+        }
+
+        private CityData ExtractCityDataFromResponseBackend(string result)
+        {
+            var cityinfodata = JObject.Parse(result);
             var city = new CityData
             {
                 Id = (int)cityinfodata.GetValue("id"),
                 Name = cityinfodata.GetValue("name").ToString(),
                 Image = cityinfodata.GetValue("image").ToString(),
             };
-            
-            
+
             try
             {
                 var weatherToken = cityinfodata.SelectToken("$.weather");
@@ -67,24 +85,37 @@ namespace Frontend_Cities.Models
                     var historyToken = weatherToken.SelectToken("$.history");
                     var childrenHistoryTokens = historyToken.Children();
                     weatherInfo.History = new List<WeatherInfo>();
-                    foreach(var child in childrenHistoryTokens)
+                    foreach (var child in childrenHistoryTokens)
                     {
                         WeatherInfo weatherInfoHistory = getWeatherInfoFromToken(child);
                         weatherInfo.History.Add(weatherInfoHistory);
                     }
-
                 }
                 catch
                 {
-
                 }
                 city.Weather = weatherInfo;
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
             }
-            cities.Add(city);
 
-            return cities;
+            return city;
+        }
+
+        private CityData getCityDataFromDictionary(string cityName)
+        {
+            var emptyCityData = new CityData();
+            if(_cityDataDictionary.ContainsKey(cityName))
+            { 
+                var timeSinceLastRequest = (DateTime.Now - _cityDataDictionary[cityName].Weather.Time).TotalHours;
+                if (timeSinceLastRequest < 24)
+                    return _cityDataDictionary[cityName];
+                else
+                    return emptyCityData;
+            }
+            else
+                return emptyCityData;;
         }
 
         private WeatherInfo getWeatherInfoFromToken(JToken weatherToken)
@@ -98,9 +129,7 @@ namespace Frontend_Cities.Models
             return weatherInfo;
         }
 
-
-
-        internal async Task<string> getInfoFromBackend(string postfix)
+        private async Task<string> getInfoFromBackend(string postfix)
         {
             
             string uri = _configClass.backendUrl + postfix;
@@ -116,24 +145,8 @@ namespace Frontend_Cities.Models
                 Console.WriteLine("Message :{0} ", e.Message);
             }
             return responseBody;
-            //JArray jsonArray = JArray.Parse(responseBody);
-            
-            //foreach(JObject item in jsonArray)
-            //{
-                
-            //    var city = new CityData
-            //    {
-            //        Id = (int)item.GetValue("id"),
-            //        Name = item.GetValue("name").ToString(),
-            //        Image = item.GetValue("image").ToString(),
-            //    };
-            //    cities.Add(city);
-            //}
-            //return cities;
         }
-
-
-
+ 
     }
 
     

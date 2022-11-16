@@ -54,5 +54,24 @@ namespace backend.Models
             };
             return result;
         }
+
+        public async Task<CityInfo> GetNewImage(string cityName)
+        {
+            var rng = new Random();
+            var randomNumer = rng.Next(29);
+            List<string> images = await _imageRetriever.getImageAsync(cityName, randomNumer);
+
+            var result = new CityInfo
+            {
+                Name = cityName,
+                Slug = string.Empty,
+                Image = images.LastOrDefault(),
+                Images = new List<string>(),
+                Id = 1,
+                Weather = new WeatherInfo(),
+                Summary = string.Empty
+            };
+            return result;
+        }
     }
 }

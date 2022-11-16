@@ -7,7 +7,7 @@ builder.Services.AddControllersWithViews();
 
 HttpClient httpClient = new HttpClient();
 builder.Services.AddSingleton<HttpClient>(httpClient);
-builder.Services.AddScoped<CityModel, CityModel>();
+builder.Services.AddScoped<ICityModel, CityModel>();
 builder.Services.Configure<ConfigurationClass>
                 (builder.Configuration.GetSection("UrlConfiguration"));
 
