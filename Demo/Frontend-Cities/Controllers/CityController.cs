@@ -5,16 +5,16 @@ namespace Frontend_Cities.Controllers
 {
     public class CityController : Controller
     {
-        private readonly CityModel _cityModel;
+        private readonly ICityModel _cityModel;
 
-        public CityController(CityModel cityModel)
+        public CityController(ICityModel cityModel)
         {
             _cityModel = cityModel;
         }
 
         public async Task<IActionResult> Index(string? name)
         {
-            if(name is null)
+            if(string.IsNullOrEmpty(name))
             {
                 List<CityData> cities = await _cityModel.getCitiesAsync();
                 return View(cities);
