@@ -151,7 +151,7 @@ namespace Frontend_Cities.Models
 
     
 
-    public class CityData
+    public struct CityData
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -159,7 +159,7 @@ namespace Frontend_Cities.Models
         public WeatherInfo Weather { get; set; }
     }
 
-    public class WeatherInfo
+    public struct WeatherInfo
     {
         public DateTime Time { get; set; }
         public decimal Temperature { get; set; }

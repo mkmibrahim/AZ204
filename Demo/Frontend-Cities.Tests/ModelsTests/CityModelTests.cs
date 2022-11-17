@@ -76,23 +76,5 @@ namespace Frontend_Cities.Tests.ModelsTests
             
         }
 
-        //[Fact]
-        //public async Task GetNewImageTest()
-        //{
-        //    // Arrange
-        //    var cityModel = new CityModel(optionsHelper.CreateOptions(), new HttpClient());
-        //    var cityName = "Amsterdam";
-        //    var resultGetCityInfo = await cityModel.getCityInfo(cityName);
-            
-        //    // Act
-        //    var result = await cityModel.getNewImage(cityName);
-
-        //    // Assert
-        //    Assert.NotNull(result);
-        //    Assert.Single(result);
-        //    Assert.Equal(cityName, result[0].Name);
-        //    Assert.NotEqual(resultGetCityInfo.FirstOrDefault().Image, result.FirstOrDefault().Image);
-        //    Assert.Equal(resultGetCityInfo.FirstOrDefault().Weather, result.FirstOrDefault().Weather);
-        //}
     }
 }
