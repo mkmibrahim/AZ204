@@ -73,31 +73,46 @@ namespace backend.Tests.ModelsTests
         }
 
         [Fact]
-        public async void GetNewImageTest()
+        public async void GetInfoRequestSoonAgainReturnNewImage()
         {
-            // Arrange
+            //Arrange
             var imageRetrieverMock = new Mock<IImageRetriever>();
-            var cityName = "Paris";
             var images = new List<string>()
             {
                 "string1",
-                "string2",
-                "string3"
+                "string2"
             };
-            imageRetrieverMock.Setup(i => i.getImageAsync(cityName, It.IsAny<int>()))
+            imageRetrieverMock.Setup(i => i.getImageAsync(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(Task.FromResult(images));
-            var composer = new CityInfoComposer(optionsHelper.CreateOptions(),
-                        imageRetrieverMock.Object, new Mock<IWeatherRetriever>().Object);
+            
+            var weatherRetrieverMock = new Mock<IWeatherRetriever>();
+            var weatherResult = new WeatherDTO
+            {
+                Temperature = 15,
+                Humidity = 30,
+                Time = DateTime.Now,
+                History = new List<WeatherDTO>
+                {
+                    new WeatherDTO{Temperature = 20, Humidity = 50, Time = new DateTime(2022, 11, 10, 22, 10, 15)},
+                    new WeatherDTO{Temperature = 25, Humidity = 55, Time = new DateTime(2022, 11, 11, 21, 15, 15)},
+                }
+            };
+            weatherRetrieverMock.Setup(w => w.GetWeather(It.IsAny<string>()))
+                .Returns(Task.FromResult(weatherResult));
+            var composer = new CityInfoComposer(optionsHelper.CreateOptions(), 
+                                imageRetrieverMock.Object, weatherRetrieverMock.Object);
+            var cityName = "Paris";
 
-            // Act
-            var result = await composer.GetNewImage(cityName);
+            //Act
+            var resultFirstCall = await composer.GetInfo(cityName);
+            var resultSecondCall = await composer.GetInfo(cityName);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(cityName, result.Name);
-            Assert.Equal(string.Empty, result.Slug);
-            Assert.Contains("string", result.Image);
-            Assert.Equal(string.Empty, result.Summary);
+            Assert.Equal(resultFirstCall.Name, resultSecondCall.Name);
+            Assert.Equal(resultFirstCall.Weather.Humidity, resultSecondCall.Weather.Humidity);
+            Assert.Equal(resultFirstCall.Weather.Temperature, resultSecondCall.Weather.Temperature);
+            Assert.Equal(1, weatherRetrieverMock.Invocations.Count);
+            Assert.Equal(2, imageRetrieverMock.Invocations.Count);
         }
     }
 }
