@@ -41,12 +41,5 @@ namespace backend.Controllers
             _logger.LogInformation("GetCities request recieved.");
             return await _availableCitiesComposer.GetAvailableCities();
         }
-        
-        [HttpGet]
-        public async Task<CityInfo> GetNewImage(string cityName)
-        {
-            _logger.LogInformation("GetNewImage reqest recieved for " + cityName);
-            return await _cityInfoComposer.GetNewImage(cityName);
-        }
     }
 }

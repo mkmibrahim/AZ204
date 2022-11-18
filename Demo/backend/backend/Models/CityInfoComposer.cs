@@ -19,6 +19,7 @@ namespace backend.Models
         private readonly ConfigurationClass _configClass;
         private readonly IImageRetriever _imageRetriever;
         private readonly IWeatherRetriever _weatherRetriever;
+        private Dictionary<string, CityInfo> _cityInfoDictionary = new Dictionary<string, CityInfo>();
 
         public CityInfoComposer(IOptions<ConfigurationClass> options, 
             IImageRetriever imageRetriever, IWeatherRetriever weatherRetriever)
@@ -31,13 +32,19 @@ namespace backend.Models
         public async Task<CityInfo> GetInfo(string cityName)
         {
             var rng = new Random();
-            var imageString = await _imageRetriever.getImageAsync(cityName);
+            if (_cityInfoDictionary.ContainsKey(cityName) && 
+                (DateTime.Now - _cityInfoDictionary[cityName].Weather.Time).TotalHours < 24)
+            {
+                var newImage = await getNewImage(cityName);
+                _cityInfoDictionary[cityName].Image = newImage;
+                return _cityInfoDictionary[cityName];
+            }
+
             List<string> images = await _imageRetriever.getImageAsync(cityName,5);
+            var imageString = images.FirstOrDefault();
             var retrievedWeatherInfo = await _weatherRetriever.GetWeather(cityName);
             var config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<WeatherDTO, WeatherInfo>();
-
-
             });
             var mapper = config.CreateMapper();
             var weatherInfo = mapper.Map<WeatherInfo>(retrievedWeatherInfo);
@@ -46,32 +53,23 @@ namespace backend.Models
             {
                 Name = cityName,
                 Slug = cityName,
-                Image = imageString.FirstOrDefault(),
+                Image = imageString,
                 Images = images,
                 Id = 1,
                 Weather = weatherInfo,
                 Summary = "This is a nice city"
             };
+            _cityInfoDictionary.Add(cityName, result);
             return result;
         }
 
-        public async Task<CityInfo> GetNewImage(string cityName)
+        private async Task<string> getNewImage(string cityName)
         {
             var rng = new Random();
             var randomNumer = rng.Next(29);
             List<string> images = await _imageRetriever.getImageAsync(cityName, randomNumer);
 
-            var result = new CityInfo
-            {
-                Name = cityName,
-                Slug = string.Empty,
-                Image = images.LastOrDefault(),
-                Images = new List<string>(),
-                Id = 1,
-                Weather = new WeatherInfo(),
-                Summary = string.Empty
-            };
-            return result;
+            return images.LastOrDefault();
         }
     }
 }

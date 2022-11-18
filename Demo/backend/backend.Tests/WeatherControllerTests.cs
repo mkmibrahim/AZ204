@@ -96,34 +96,5 @@ namespace backend.Tests
 
             }
         }
-
-        [Fact]
-        public async void GetCityImageTest()
-        {
-            // Arrange 
-            var loggerMock = new Mock<ILogger<CityController>>();
-            ILogger<CityController> logger = loggerMock.Object;
-            var cityInfoComposerMock = new Mock<ICityInfoComposer>();
-            var cityName = "TestCity";
-            var expectedReturnMessage = new CityInfo
-            {
-                Name = cityName,
-                Slug = string.Empty,
-                Image = cityName +".jpg",
-                Summary = string.Empty
-            };
-            cityInfoComposerMock.Setup( c => c.GetNewImage(cityName)).ReturnsAsync(expectedReturnMessage);
-            
-            var controller = new CityController(logger, cityInfoComposerMock.Object, new Mock<IAvailableCitiesComposer>().Object );
-
-            // Act 
-            var response = await controller.GetNewImage(cityName);
-
-            // Assert
-            Assert.Equal(cityName, response.Name);
-            Assert.Equal(string.Empty, response.Slug);
-            Assert.Equal(cityName+".jpg", response.Image);
-            Assert.Equal(string.Empty, response.Summary);
-        }
     }
 }
