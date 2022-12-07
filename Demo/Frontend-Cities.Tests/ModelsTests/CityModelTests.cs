@@ -56,25 +56,5 @@ namespace Frontend_Cities.Tests.ModelsTests
                 Assert.IsType<DateTime>(result[0].Weather.History[i].Time);
             }
         }
-
-        [Fact]
-        public async Task GetCityInfoSoonReturnsNewImage()
-        {
-            // Arrange
-            var cityModel = new CityModel(optionsHelper.CreateOptions(), new HttpClient());
-            var cityName = "Amsterdam";
-
-            // Act
-            var resultFirstCall = await cityModel.getCityInfo(cityName);
-            var resultSecondCall = await cityModel.getCityInfo(cityName);
-
-            // Assert
-            Assert.Equal(resultFirstCall[0].Name, resultSecondCall[0].Name);
-            Assert.Equal(resultFirstCall[0].Weather, resultSecondCall[0].Weather);
-            Assert.NotEqual(resultFirstCall[0].Image, resultSecondCall[0].Image);
-            
-            
-        }
-
     }
 }

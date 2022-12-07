@@ -14,7 +14,6 @@ namespace Frontend_Cities.Models
     {
         private readonly ConfigurationClass _configClass;
         private readonly HttpClient _httpClient;
-        private Dictionary<string, CityData> _cityDataDictionary = new Dictionary<string, CityData>();
 
         public CityModel(IOptions<ConfigurationClass> options, HttpClient httpClient)
         {
@@ -47,21 +46,9 @@ namespace Frontend_Cities.Models
             var postfix = "Get?cityName=" + cityName;
             List<CityData> cities = new List<CityData>();
 
-            var valueWithinLastday = getCityDataFromDictionary(cityName);
-            if (valueWithinLastday.Name == cityName)
-            {
-                postfix = "GetNewImage?cityName=" + cityName;
-                var resultNewImage = await getInfoFromBackend(postfix);
-                CityData cityDataNewImage = ExtractCityDataFromResponseBackend(resultNewImage);
-                valueWithinLastday.Image = cityDataNewImage.Image;
-                cities.Add(valueWithinLastday);
-                return cities;
-            }
-
             var result = await getInfoFromBackend(postfix);
             CityData city = ExtractCityDataFromResponseBackend(result);
 
-            _cityDataDictionary[cityName] = city;
             cities.Add(city);
             return cities;
         }
@@ -101,21 +88,6 @@ namespace Frontend_Cities.Models
             }
 
             return city;
-        }
-
-        private CityData getCityDataFromDictionary(string cityName)
-        {
-            var emptyCityData = new CityData();
-            if(_cityDataDictionary.ContainsKey(cityName))
-            { 
-                var timeSinceLastRequest = (DateTime.Now - _cityDataDictionary[cityName].Weather.Time).TotalHours;
-                if (timeSinceLastRequest < 24)
-                    return _cityDataDictionary[cityName];
-                else
-                    return emptyCityData;
-            }
-            else
-                return emptyCityData;;
         }
 
         private WeatherInfo getWeatherInfoFromToken(JToken weatherToken)

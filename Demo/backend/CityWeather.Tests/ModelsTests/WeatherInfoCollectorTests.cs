@@ -11,10 +11,11 @@ namespace CityWeather.Tests.ModelsTests
     public class WeatherInfoCollectorTests
     {
         private readonly IWeatherInfoCollector _weatherInfoCollector;
+        private readonly Mock<IWeatherInfoRetriever> weatherRetrieverMock;
 
         public WeatherInfoCollectorTests()
         {
-            var weatherRetrieverMock =  new Mock<IWeatherInfoRetriever>();
+            weatherRetrieverMock =  new Mock<IWeatherInfoRetriever>();
             CurrentWeatherObject mockWeatherInfoObject = new CurrentWeatherObject()
             {
                 Temperature = 22,
@@ -58,6 +59,23 @@ namespace CityWeather.Tests.ModelsTests
             Assert.NotNull(response.History);
             var history = response.History;
             Assert.True(history.Count > 0);
+        }
+
+                [Fact]
+        public async Task CollectWeatherInfoSoonReturnsLatestHistoric()
+        {
+            // Arrange 
+            
+
+            // Act
+            var responseFirstCall = await _weatherInfoCollector.GetWeatherInfo("Paris");
+            var responseSecondCall = await _weatherInfoCollector.GetWeatherInfo("Paris");
+
+            // Assert
+            Assert.Equal(1, weatherRetrieverMock.Invocations.Count);
+            Assert.Equal(responseFirstCall.Temperature, responseSecondCall.Temperature);
+            Assert.Equal(responseFirstCall.Humidity, responseSecondCall.Humidity);
+            Assert.Equal(responseFirstCall.History, responseSecondCall.History);
         }
     }
 }
