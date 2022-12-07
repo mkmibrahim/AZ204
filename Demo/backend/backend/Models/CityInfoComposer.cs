@@ -19,7 +19,6 @@ namespace backend.Models
         private readonly ConfigurationClass _configClass;
         private readonly IImageRetriever _imageRetriever;
         private readonly IWeatherRetriever _weatherRetriever;
-        private Dictionary<string, CityInfo> _cityInfoDictionary = new Dictionary<string, CityInfo>();
 
         public CityInfoComposer(IOptions<ConfigurationClass> options, 
             IImageRetriever imageRetriever, IWeatherRetriever weatherRetriever)
@@ -32,16 +31,8 @@ namespace backend.Models
         public async Task<CityInfo> GetInfo(string cityName)
         {
             var rng = new Random();
-            if (_cityInfoDictionary.ContainsKey(cityName) && 
-                (DateTime.Now - _cityInfoDictionary[cityName].Weather.Time).TotalHours < 24)
-            {
-                var newImage = await getNewImage(cityName);
-                _cityInfoDictionary[cityName].Image = newImage;
-                return _cityInfoDictionary[cityName];
-            }
+            
 
-            List<string> images = await _imageRetriever.getImageAsync(cityName,5);
-            var imageString = images.FirstOrDefault();
             var retrievedWeatherInfo = await _weatherRetriever.GetWeather(cityName);
             var config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<WeatherDTO, WeatherInfo>();
@@ -49,6 +40,13 @@ namespace backend.Models
             var mapper = config.CreateMapper();
             var weatherInfo = mapper.Map<WeatherInfo>(retrievedWeatherInfo);
 
+            List<string> images = await _imageRetriever.getImageAsync(cityName,5);
+            string imageString;
+            if ((DateTime.Now - weatherInfo.Time).TotalHours < 24)
+                imageString = await getNewImage(cityName);
+            else
+                imageString = images.FirstOrDefault();
+            
             var result = new CityInfo
             {
                 Name = cityName,
@@ -59,7 +57,6 @@ namespace backend.Models
                 Weather = weatherInfo,
                 Summary = "This is a nice city"
             };
-            _cityInfoDictionary.Add(cityName, result);
             return result;
         }
 

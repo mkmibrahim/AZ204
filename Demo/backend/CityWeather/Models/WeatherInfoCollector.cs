@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CityWeather.Models
 {
@@ -17,28 +19,40 @@ namespace CityWeather.Models
 
         public async Task<WeatherInfoObject> GetWeatherInfo(string cityName)
         {
-            var time = DateTime.Now;
-            var retrieverInfo = await _weatherInfoRetriever.RetrieveWeatherInfo(cityName);
-
-            // Add weatherinfo to history
-            var WeatherInfoObject = new WeatherInfoObject
-            {
-                cityName = cityName,
-                Time = time,
-                Temperature = retrieverInfo.Temperature,
-                Humidity = retrieverInfo.Humidity
-            };
-            _weatherHistoryManager.AddWeatherInfo(WeatherInfoObject);
-
+            var result = new WeatherInfoObject();
             // retrieve weatherinfo history
             var weatherhistory = _weatherHistoryManager.GetWeatherInfo(cityName);
-
-            var result = new WeatherInfoObject()
+            
+            
+            if (weatherhistory.Count > 0 &&
+                (DateTime.Now - weatherhistory.FirstOrDefault().Time).TotalHours < 2)
             {
-                Time = time,
-                Temperature = retrieverInfo.Temperature,
-                Humidity = retrieverInfo.Humidity,
-                History = weatherhistory
+                result.Time = weatherhistory.FirstOrDefault().Time;
+                result.Temperature = weatherhistory.FirstOrDefault().Temperature;
+                result.Humidity = weatherhistory.FirstOrDefault().Humidity;
+                result.History = weatherhistory;
+            }
+            else
+            {
+                var time = DateTime.Now;
+                var retrieverInfo = await _weatherInfoRetriever.RetrieveWeatherInfo(cityName);
+
+                // Add weatherinfo to history
+                var WeatherInfoObject = new WeatherInfoObject
+                {
+                    cityName = cityName,
+                    Time = time,
+                    Temperature = retrieverInfo.Temperature,
+                    Humidity = retrieverInfo.Humidity
+                };
+                _weatherHistoryManager.AddWeatherInfo(WeatherInfoObject);
+
+            
+
+                result.Time = time;
+                result.Temperature = retrieverInfo.Temperature;
+                result.Humidity = retrieverInfo.Humidity;
+                result.History = weatherhistory;
             };
             return result;
         }
