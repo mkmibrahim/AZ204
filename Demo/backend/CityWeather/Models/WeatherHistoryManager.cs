@@ -93,6 +93,7 @@ namespace CityWeather.Models
 
         public List<WeatherInfoObject> GetWeatherInfo(string cityName)
         {
+            // TODO: Simulate database not available
             var result = new List<WeatherInfoObject>();
             var cityRecord = _weatherDbContext.Cities
                                 .Where(c => c.cityName == cityName)

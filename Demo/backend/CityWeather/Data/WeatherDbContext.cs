@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 
@@ -24,11 +25,11 @@ namespace CityWeather.Data
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
-                #if DEBUG
+#if DEBUG
                     .AddJsonFile("appsettings.Development.json")
-                #else
+#else
                     .AddJsonFile("appsettings.Production.json")
-                #endif
+#endif
                .Build();
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
@@ -36,17 +37,17 @@ namespace CityWeather.Data
 
         }
 
-        protected override void OnModelCreating (ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<cityData>(entity =>
-            { 
+            {
                 entity.HasKey(e => e.cityId);
                 entity.Property(e => e.cityName).HasMaxLength(250);
                 entity.Property(e => e.counteryName).HasMaxLength(250);
 
-                entity.HasData( new cityData
+                entity.HasData(new cityData
                 {
                     cityId = 1,
                     cityName = "Amsterdam",
@@ -62,9 +63,9 @@ namespace CityWeather.Data
                 entity.Property(e => e.cityId);
                 entity.Property(e => e.temperature);
                 entity.Property(e => e.humidity);
-                
+
             });
-            
+
             ;
         }
     }

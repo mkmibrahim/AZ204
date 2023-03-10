@@ -1,14 +1,21 @@
-﻿using CityWeather.Data;
+﻿using Castle.Components.DictionaryAdapter.Xml;
+using CityWeather.Data;
 using CityWeather.Models;
 using CityWeather.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Options;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml;
 using Xunit;
+using Xunit.Sdk;
+
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 namespace CityWeather.Tests.ModelsTests
@@ -16,9 +23,7 @@ namespace CityWeather.Tests.ModelsTests
     
     public class WeatherHistoryManagerTests :IDisposable
     {
-        //private readonly DbContextOptions<WeatherDbContext> _options;
-        //private WeatherDbContext _context;
-
+  
         #region Helpers
         static void AssertWeatherRecordsEqual(WeatherInfoObject WeatherInfoObject, WeatherInfoObject retrievedRecord)
         {
@@ -171,8 +176,42 @@ namespace CityWeather.Tests.ModelsTests
                 AssertWeatherRecordsEqual(WeatherInfoObject, retrievedRecords.FirstOrDefault());
             }
         }
+
+        [Fact]
+        public void GetWeatherInfoDbContextReturnsException()
+        {
+            // Arrange
+            List<cityData> list = new List<cityData>();
+            list.Add(new cityData());
+            var expectedEx = new Exception();
+            var queryable = list.AsQueryable().Where(  r => ThrowException(expectedEx) );
+            
+            var mockSet = new Mock<DbSet<cityData>>();
+            mockSet.Setup(m => m.AsQueryable()).Returns(queryable);
+            mockSet.As<IQueryable<cityData>>().Setup(m => m.Provider).Returns(queryable.Provider);
+            mockSet.As<IQueryable<cityData>>().Setup(m=> m.Expression).Returns(queryable.Expression);
+
+            // Create a mock dbContext that will throw an exception when the repository call the Iqueryable's ToList method
+            var mockContext = new Mock<WeatherDbContext>(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name));
+            //mockContext.SetupGet(x => x.Database).Returns(new Mock<DatabaseFacade>(new WeatherDbContext(optionsHelper.CreateNewContextOptions(MethodInfo.GetCurrentMethod().Name))).Object);
+            mockContext.Setup(x => x.Cities);
+
+            // Act
+            IWeatherHistoryManager manager = new WeatherHistoryManager(mockContext.Object);
+            
+            var thrownEx = manager.GetWeatherInfo(WeatherInfoObject.cityName);
+
+            // Assert
+        }
+
+        private bool ThrowException(Exception e)
+        {
+            throw e;
+        }
         #endregion
 
 
     }
+
+   
 }
