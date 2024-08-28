@@ -26,3 +26,4 @@ if($VMNameCheck){
     az vm create -g $resourceGroupName -n $VMName -l $azureLocation --admin-username $args[0] --admin-password $args[1] --image MicrosoftWindowsDesktop:Windows-10:win10-21h2-entn-g2:19044.2006.220909 --public-ip-sku Standard
     Write-Host "Virtual machine $VMName created."
 }
+
